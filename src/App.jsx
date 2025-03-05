@@ -126,6 +126,42 @@ function App() {
         </div>
       </section>
 
+      {/* Contact Me Section */}
+      <section id="contact" className="section contact-me-section">
+        <h2>Contact Me</h2>
+        <div className="contact-details">
+          <div className="contact-info">
+            <a href="mailto:fyoussef@zagmail.gonzaga.edu" className="contact-item">
+              <i className="fas fa-envelope"></i> fyoussef@zagmail.gonzaga.edu
+            </a>
+            <a href="mailto:itsfadyy02@gmail.com" className="contact-item">
+              <i className="fas fa-phone"></i>
+            </a>
+            <span className="contact-item">
+              <i className="fas fa-map-marker-alt"></i> Spokane, WA
+            </span>
+          </div>
+          <div className="social-links">
+            <a href="https://www.linkedin.com/in/justfadyy/" target="_blank" rel="noopener noreferrer" className="social-item">
+              <i className="fab fa-linkedin"></i> LinkedIn
+            </a>
+            <a href="https://github.com/JustFady" target="_blank" rel="noopener noreferrer" className="social-item">
+              <i className="fab fa-github"></i> GitHub
+            </a>
+            <a href="/Youssef_Fady_Developer_Intern-4.pdf" target="_blank" rel="noopener noreferrer" className="social-item">
+              <i className="fas fa-file"></i> Resume
+            </a>
+          </div>
+        </div>
+        <form className="contact-form">
+          <input type="text" name="name" placeholder="Name" required />
+          <input type="email" name="email" placeholder="Email" required />
+          <input type="text" name="subject" placeholder="Subject" required />
+          <textarea name="message" placeholder="Message" required></textarea>
+          <button type="submit" className="send-button">Send Message</button>
+        </form>
+      </section>
+
       <footer className="footer">
         <p>Designed & Built by Fady Youssef</p>
         <p>© 2025 All rights reserved.</p>
