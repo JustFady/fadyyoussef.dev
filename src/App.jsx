@@ -230,7 +230,9 @@ function App() {
 
       <footer id="contact" className="footer" data-reveal>
         <p className="eyebrow">Contact</p>
-        <h2 className="footer-headline">Let&apos;s connect and build something cool.</h2>
+        <h2 className="footer-headline" style={{ whiteSpace: 'nowrap', fontSize: 'min(1.1rem, 3.8vw)', margin: '8px 0' }}>
+          Let&apos;s connect &amp; build something cool.
+        </h2>
 
         <div className="footer-bottom">
           <a href="mailto:thefady4@gmail.com" className="footer-email">
