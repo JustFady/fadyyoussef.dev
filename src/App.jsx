@@ -229,25 +229,21 @@ function App() {
       </main>
 
       <footer id="contact" className="footer" data-reveal>
-        <div className="footer-content">
-          <div className="footer-top">
-            <p className="eyebrow">Contact</p>
-            <h2 className="footer-heading">Let&apos;s connect and build something cool.</h2>
-          </div>
+        <p className="eyebrow">Contact</p>
+        <h2 className="footer-headline">Let&apos;s connect and build something cool.</h2>
 
-          <div className="footer-bottom">
-            <a href="mailto:thefady4@gmail.com" className="footer-email">
-              thefady4@gmail.com
-            </a>
-            
-            <nav className="footer-nav">
-              <a href="https://github.com/JustFady" target="_blank" rel="noreferrer">GitHub</a>
-              <a href="https://www.linkedin.com/in/fadyyoussef08/" target="_blank" rel="noreferrer">LinkedIn</a>
-              <a href="/resume.pdf" target="_blank" rel="noreferrer">Resume</a>
-            </nav>
-            
-            <p className="footer-note">© 2026 Fady Youssef</p>
-          </div>
+        <div className="footer-bottom">
+          <a href="mailto:thefady4@gmail.com" className="footer-email">
+            thefady4@gmail.com
+          </a>
+          
+          <nav className="footer-nav">
+            <a href="https://github.com/JustFady" target="_blank" rel="noreferrer">GitHub</a>
+            <a href="https://www.linkedin.com/in/fadyyoussef08/" target="_blank" rel="noreferrer">LinkedIn</a>
+            <a href="/resume.pdf" target="_blank" rel="noreferrer">Resume</a>
+          </nav>
+          
+          <p className="footer-note">© 2026 Fady Youssef</p>
         </div>
       </footer>
     </div>
