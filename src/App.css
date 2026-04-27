@@ -340,15 +340,18 @@
 }
 
 .footer {
-  max-width: 860px;
-  margin: 100px auto 0;
-  padding: 32px 40px;
-  border-radius: 24px;
+  width: 100%;
+  margin-top: 80px;
+  padding: 24px 32px;
+  border-radius: 20px;
   border: 1px solid rgba(255, 255, 255, 0.08);
   background:
-    radial-gradient(circle at center, rgba(105, 195, 255, 0.04), transparent 70%),
-    rgba(255, 255, 255, 0.03);
-  text-align: center;
+    radial-gradient(circle at center, rgba(105, 195, 255, 0.03), transparent 70%),
+    rgba(255, 255, 255, 0.025);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  text-align: left;
 }
 
 .footer-content {
@@ -359,21 +362,20 @@
 
 .footer-heading {
   font-family: var(--font-display);
-  font-size: clamp(1.4rem, 3.5vw, 2.4rem);
+  font-size: clamp(1.2rem, 3vw, 2.1rem);
   font-weight: 600;
-  line-height: 1.1;
-  margin-top: 8px;
+  line-height: 1;
   white-space: nowrap;
 }
 
 .footer-bottom {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  gap: 20px;
-  padding-top: 20px;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  gap: 16px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .footer-email {
@@ -389,7 +391,7 @@
 
 .footer-nav {
   display: flex;
-  gap: 20px;
+  gap: 16px;
 }
 
 .footer-nav a {
@@ -418,10 +420,9 @@
 }
 
 .footer-note {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   color: var(--text-muted);
-  width: 100%;
-  margin-top: 8px;
+  margin-top: 4px;
 }
 
 [data-reveal] {
