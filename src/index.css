@@ -1,68 +1,322 @@
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Manrope', system-ui, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  color-scheme: dark;
+
+  --font-display: 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
+  --bg-primary: #071018;
+  --bg-secondary: #0d1821;
+  --surface: rgba(255, 255, 255, 0.05);
+  --text-primary: #f4efe6;
+  --text-secondary: rgba(244, 239, 230, 0.78);
+  --text-muted: rgba(244, 239, 230, 0.56);
+  --accent-primary: #ffc45c;
+  --accent-secondary: #6bc7ff;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
   min-width: 320px;
+  min-height: 100vh;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 25%),
+    linear-gradient(135deg, #08121a 0%, #091923 42%, #050c12 100%);
+  color: var(--text-primary);
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.48), transparent 85%);
+  z-index: -1;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+#root {
   min-height: 100vh;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+.globe-scene {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+.globe-halo {
+  position: absolute;
+  width: 380px;
+  height: 380px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(107, 199, 255, 0.2), transparent 62%);
+  filter: blur(14px);
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
+.globe-sphere {
+  position: relative;
+  width: min(52vw, 280px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 30% 28%, rgba(255, 255, 255, 0.55), transparent 16%),
+    radial-gradient(circle at 35% 35%, rgba(255, 196, 92, 0.24), transparent 34%),
+    radial-gradient(circle at 50% 50%, #153246, #081017 76%);
+  box-shadow:
+    inset 0 0 40px rgba(255, 255, 255, 0.05),
+    0 0 60px rgba(107, 199, 255, 0.18);
+  animation: float-globe 7s ease-in-out infinite;
+}
+
+.globe-latitude,
+.globe-longitude {
+  position: absolute;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 50%;
+}
+
+.globe-latitude {
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+}
+
+.latitude-top {
+  top: 20%;
+  height: 18%;
+}
+
+.latitude-mid {
+  top: 41%;
+  height: 20%;
+}
+
+.latitude-low {
+  top: 63%;
+  height: 18%;
+}
+
+.globe-longitude {
+  top: 7%;
+  bottom: 7%;
+}
+
+.longitude-left {
+  left: 28%;
+  width: 18%;
+}
+
+.longitude-mid {
+  left: 41%;
+  width: 18%;
+}
+
+.longitude-right {
+  right: 28%;
+  width: 18%;
+}
+
+.signal {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent-primary);
+  box-shadow: 0 0 18px rgba(255, 196, 92, 0.9);
+}
+
+.signal::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border: 1px solid rgba(255, 196, 92, 0.45);
+  border-radius: 50%;
+  animation: ping 2.4s ease-out infinite;
+}
+
+.signal-one {
+  top: 30%;
+  left: 62%;
+}
+
+.signal-two {
+  top: 58%;
+  left: 34%;
+  background: var(--accent-secondary);
+  box-shadow: 0 0 18px rgba(107, 199, 255, 0.9);
+}
+
+.signal-two::after {
+  border-color: rgba(107, 199, 255, 0.45);
+  animation-delay: 0.8s;
+}
+
+.globe-orbit {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  transform-style: preserve-3d;
+}
+
+.globe-orbit span {
+  position: absolute;
+  top: -4px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.86);
+  box-shadow: 0 0 16px rgba(255, 255, 255, 0.6);
+}
+
+.orbit-large {
+  width: min(72vw, 390px);
+  aspect-ratio: 1;
+  animation: orbit-spin 14s linear infinite;
+}
+
+.orbit-mid {
+  width: min(64vw, 330px);
+  aspect-ratio: 1;
+  transform: rotateX(72deg);
+  animation: orbit-spin-reverse 10s linear infinite;
+}
+
+.orbit-small {
+  width: min(52vw, 270px);
+  aspect-ratio: 1;
+  transform: rotateY(72deg);
+  animation: orbit-spin 8s linear infinite;
+}
+
+.globe-caption {
+  position: absolute;
+  left: 32px;
+  bottom: 28px;
+  display: grid;
+  gap: 6px;
+  padding: 14px 16px;
+  border-radius: 18px;
+  background: rgba(6, 10, 16, 0.52);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px);
+}
+
+.globe-caption p {
+  margin: 0;
+  font-weight: 600;
+}
+
+.globe-caption span {
+  color: var(--text-muted);
+  font-size: 0.92rem;
+}
+
+@keyframes float-globe {
+  0%,
+  100% {
+    transform: translateY(0px);
   }
-  a:hover {
-    color: #747bff;
+
+  50% {
+    transform: translateY(-12px);
   }
-  button {
-    background-color: #f9f9f9;
+}
+
+@keyframes orbit-spin {
+  from {
+    transform: rotateX(72deg) rotate(0deg);
+  }
+
+  to {
+    transform: rotateX(72deg) rotate(360deg);
+  }
+}
+
+@keyframes orbit-spin-reverse {
+  from {
+    transform: rotateY(72deg) rotate(0deg);
+  }
+
+  to {
+    transform: rotateY(72deg) rotate(-360deg);
+  }
+}
+
+@keyframes ping {
+  0% {
+    transform: scale(0.7);
+    opacity: 0.9;
+  }
+
+  100% {
+    transform: scale(1.7);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .globe-sphere,
+  .globe-orbit,
+  .signal::after {
+    animation: none;
+  }
+}
+
+@media (max-width: 720px) {
+  .globe-sphere {
+    width: min(62vw, 230px);
+  }
+
+  .orbit-large {
+    width: min(82vw, 330px);
+  }
+
+  .orbit-mid {
+    width: min(72vw, 284px);
+  }
+
+  .orbit-small {
+    width: min(62vw, 236px);
+  }
+
+  .globe-caption {
+    left: 18px;
+    bottom: 18px;
   }
 }

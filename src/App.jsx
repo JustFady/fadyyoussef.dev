@@ -1,170 +1,268 @@
-// src/App.jsx
-import React from 'react';
-import NavBar from './NavBar';
+import React, { useEffect } from 'react';
+import Globe from './Globe';
 import './App.css';
 
+const projects = [
+  {
+    title: 'HoopMetrics',
+    category: 'Analytics Platform',
+    desc: 'A basketball intelligence platform that turns real-time player and team data into fast, readable performance insights for coaches, athletes, and fans.',
+    tech: ['React', 'Node.js', 'MongoDB'],
+    link: 'https://github.com/JustFady',
+  },
+  {
+    title: 'Hospital Management System',
+    category: 'Operations Software',
+    desc: 'A full workflow system for patient records, staff coordination, and scheduling designed to make day-to-day hospital operations more reliable.',
+    tech: ['Java', 'Spring Boot', 'MySQL'],
+    link: 'https://github.com/JustFady/HospitalManagement',
+  },
+  {
+    title: 'Three Classic Ciphers',
+    category: 'Security Fundamentals',
+    desc: 'A compact C++ implementation of classic encryption algorithms built to explore core cryptography ideas and careful systems programming.',
+    tech: ['C++', 'Cryptography'],
+    link: 'https://github.com/JustFady/ThreeClassicCiphers',
+  },
+  {
+    title: 'Heat Transfer',
+    category: 'Simulation Project',
+    desc: 'A C# and .NET project focused on modeling heat transfer behavior with an emphasis on technical accuracy and clear implementation.',
+    tech: ['C#', '.NET'],
+    link: 'https://github.com/JustFady/HeatTransfer',
+  },
+];
+
+const strengths = [
+  {
+    title: 'Full-stack systems',
+    copy: 'I like products that need both a polished interface and dependable backend logic. My best work lives where those two worlds have to cooperate cleanly.',
+  },
+  {
+    title: 'Sharp problem solving',
+    copy: 'I enjoy the hard part: clarifying messy requirements, breaking problems down, and finding solutions that stay readable after the deadline passes.',
+  },
+  {
+    title: 'Built for momentum',
+    copy: 'I care about building things that move teams forward, whether that means shipping features, improving workflows, or making the codebase easier to trust.',
+  },
+];
+
+const stats = [
+  { value: '4+', label: 'portfolio projects' },
+  { value: 'CS', label: 'student at Gonzaga' },
+  { value: '100%', label: 'focus on usable software' },
+];
+
 function App() {
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+          }
+        });
+      },
+      {
+        threshold: 0.16,
+        rootMargin: '0px 0px -8% 0px',
+      }
+    );
+
+    const revealElements = document.querySelectorAll('[data-reveal]');
+    revealElements.forEach((element) => observer.observe(element));
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <div className="app-container">
-      <NavBar />
-      
-      {/* Hero Section */}
-      <section id="home" className="hero">
-        <div className="hero-content">
-          <h1>Hello, I'm Fady Youssef</h1>
-          <p>Computer Science Student</p>
-          <a href="#projects" className="cta">View My Work</a>
+    <div className="app-shell">
+      <div className="page-noise" aria-hidden="true" />
+
+      <header className="topbar" data-reveal>
+        <a href="#home" className="brand">
+          FY
+        </a>
+        <nav className="topnav" aria-label="Primary">
+          <a href="#about">About</a>
+          <a href="#work">Work</a>
+          <a href="#contact">Contact</a>
+        </nav>
+      </header>
+
+      <main>
+        <section id="home" className="hero" data-reveal>
+          <div className="hero-copy">
+            <p className="eyebrow">Portfolio 2026</p>
+            <h1>Fady Youssef builds software with clarity, pace, and taste.</h1>
+            <p className="hero-text">
+              Computer Science student at Gonzaga University focused on full-stack
+              development, thoughtful interfaces, and products that feel sharp from
+              the first click.
+            </p>
+
+            <div className="hero-actions">
+              <a href="#work" className="button button-primary">
+                View work
+              </a>
+              <a
+                href="/Youssef_Fady_Developer_Intern-4.pdf"
+                className="button button-secondary"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Resume
+              </a>
+            </div>
+
+            <div className="stat-row">
+              {stats.map((stat) => (
+                <div key={stat.label} className="stat-tile">
+                  <span>{stat.value}</span>
+                  <p>{stat.label}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="hero-visual">
+            <div className="hero-panel">
+              <div className="panel-header">
+                <span />
+                <span />
+                <span />
+              </div>
+              <div className="panel-body">
+                <Globe />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="about" className="section section-split" data-reveal>
+          <div className="section-heading">
+            <p className="eyebrow">About</p>
+            <h2>Clean systems, cinematic presentation, and real utility.</h2>
+          </div>
+
+          <div className="about-grid">
+            <p className="about-copy">
+              I am a junior pursuing a B.S. in Computer Science, and I like work that
+              balances engineering discipline with a strong user experience. That
+              usually means building dependable systems, making technical information
+              easier to understand, and shaping interfaces that feel considered instead
+              of accidental.
+            </p>
+
+            <div className="strength-grid">
+              {strengths.map((item) => (
+                <article key={item.title} className="strength-card">
+                  <h3>{item.title}</h3>
+                  <p>{item.copy}</p>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section id="work" className="section" data-reveal>
+          <div className="section-heading">
+            <p className="eyebrow">Selected work</p>
+            <h2>Projects that show how I think, build, and refine.</h2>
+          </div>
+
+          <div className="project-list">
+            {projects.map((project, index) => (
+              <article key={project.title} className="project-card">
+                <div className="project-meta">
+                  <span className="project-index">0{index + 1}</span>
+                  <p>{project.category}</p>
+                </div>
+
+                <div className="project-main">
+                  <h3>{project.title}</h3>
+                  <p>{project.desc}</p>
+
+                  <div className="tag-row">
+                    {project.tech.map((tech) => (
+                      <span key={tech}>{tech}</span>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="project-link-wrap">
+                  <a
+                    href={project.link}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="project-link"
+                  >
+                    Open project
+                  </a>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="section insight-band" data-reveal>
+          <div className="section-heading">
+            <p className="eyebrow">What I bring</p>
+            <h2>I like shipping software that earns trust quickly.</h2>
+          </div>
+
+          <div className="insight-layout">
+            <div className="insight-quote">
+              <p>
+                Good software should feel fast, composed, and easy to understand. I
+                try to build with that standard even when the project is technically
+                dense.
+              </p>
+            </div>
+
+            <div className="insight-list">
+              <div>
+                <h3>Technical range</h3>
+                <p>React, Node.js, Java, Spring Boot, MongoDB, MySQL, C#, and C++.</p>
+              </div>
+              <div>
+                <h3>Working style</h3>
+                <p>Structured, collaborative, and focused on momentum without losing code quality.</p>
+              </div>
+              <div>
+                <h3>Current base</h3>
+                <p>Spokane, Washington with roots in product thinking and engineering fundamentals.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer id="contact" className="footer" data-reveal>
+        <div className="footer-copy">
+          <p className="eyebrow">Contact</p>
+          <h2>Let&apos;s build something that feels finished.</h2>
+          <p>
+            Reach out for internships, collaborations, or projects that need clean
+            execution and a strong interface.
+          </p>
         </div>
-        <div className="contact-info">
-          <a href="mailto:fyoussef@zagmail.gonzaga.edu" className="contact-item">
-            <i className="fas fa-envelope"></i> Email
+
+        <div className="footer-actions">
+          <a href="mailto:fyoussef@zagmail.gonzaga.edu" className="footer-email">
+            fyoussef@zagmail.gonzaga.edu
           </a>
-          <a href="https://github.com/JustFady" target="_blank" rel="noopener noreferrer" className="contact-item">
-            <i className="fab fa-github"></i> GitHub
-          </a>
-          <a href="https://www.linkedin.com/in/justfadyy/" target="_blank" rel="noopener noreferrer" className="contact-item">
-            <i className="fab fa-linkedin"></i> LinkedIn
-          </a>
+          <div className="footer-links">
+            <a href="https://github.com/JustFady" target="_blank" rel="noreferrer">
+              GitHub
+            </a>
+            <a href="https://linkedin.com/in/justfadyy" target="_blank" rel="noreferrer">
+              LinkedIn
+            </a>
+          </div>
+          <p className="footer-note">© 2026 Fady Youssef</p>
         </div>
-      </section>
-
-      {/* About Section */}
-      <section id="about" className="section about-section">
-        <h2>About Me</h2>
-        <p>
-          I'm a passionate Computer Science student with a focus on building innovative solutions. 
-          I love working with modern technologies and creating applications that make a difference.
-        </p>
-        <div className="skills-grid">
-          <span className="skill-tag">JavaScript</span>
-          <span className="skill-tag">React</span>
-          <span className="skill-tag">Python</span>
-          <span className="skill-tag">Java</span>
-          <span className="skill-tag">C#</span>
-          <span className="skill-tag">Git</span>
-        </div>
-      </section>
-
-      {/* Projects Section */}
-      <section id="projects" className="section">
-        <h2>Projects</h2>
-        <div className="projects-grid">
-          <div className="project-card">
-            <h3>HoopMetrics</h3>
-            <p>A basketball analytics platform that aggregates real-time data on players and teams. It allows coaches, players, and fans to track performance stats, game trends, and advanced metrics through a user-friendly interface.</p>
-            <div className="project-tech">
-              <span>React</span>
-              <span>Node.js</span>
-              <span>MongoDB</span>
-            </div>
-            <a href="https://github.com/JustFady" className="project-link" target="_blank" rel="noopener noreferrer">
-              View on GitHub <i className="fab fa-github"></i>
-            </a>
-          </div>
-
-          <div className="project-card">
-            <h3>Hospital Management System</h3>
-            <p>A comprehensive system for managing hospital operations, including patient records, staff management, and appointment scheduling.</p>
-            <div className="project-tech">
-              <span>Java</span>
-              <span>Spring Boot</span>
-              <span>MySQL</span>
-            </div>
-            <a href="https://github.com/JustFady/HospitalManagement" className="project-link" target="_blank" rel="noopener noreferrer">
-              View on GitHub <i className="fab fa-github"></i>
-            </a>
-          </div>
-
-          <div className="project-card">
-            <h3>Three Classic Ciphers</h3>
-            <p>Implementation of three classic encryption algorithms in C++. Demonstrates fundamental cryptography concepts and secure coding practices.</p>
-            <div className="project-tech">
-              <span>C++</span>
-              <span>Cryptography</span>
-            </div>
-            <a href="https://github.com/JustFady/ThreeClassicCiphers" className="project-link" target="_blank" rel="noopener noreferrer">
-              View on GitHub <i className="fab fa-github"></i>
-            </a>
-          </div>
-
-          <div className="project-card">
-            <h3>Heat Transfer</h3>
-            <p>A project focused on simulating heat transfer processes using C# and .NET technologies.</p>
-            <div className="project-tech">
-              <span>C#</span>
-              <span>.NET</span>
-            </div>
-            <a href="https://github.com/JustFady/HeatTransfer" className="project-link" target="_blank" rel="noopener noreferrer">
-              View on GitHub <i className="fab fa-github"></i>
-            </a>
-          </div>
-
-          <div className="project-card">
-            <h3>Car Rental System</h3>
-            <p>A C++ application for managing car rentals, featuring inventory management, booking system, and customer tracking functionality.</p>
-            <div className="project-tech">
-              <span>C++</span>
-              <span>OOP</span>
-            </div>
-            <a href="https://github.com/JustFady/CarRental" className="project-link" target="_blank" rel="noopener noreferrer">
-              View on GitHub <i className="fab fa-github"></i>
-            </a>
-          </div>
-
-          <div className="project-card">
-            <h3>CPSC Courses at Gonzaga University</h3>
-            <p>Collection of coursework and projects completed during Computer Science studies at Gonzaga University.</p>
-            <div className="project-tech">
-              <span>Jupyter Notebook</span>
-              <span>C++</span>
-              <span>Python</span>
-            </div>
-            <a href="https://github.com/JustFady/CPSC_Courses_GU" className="project-link" target="_blank" rel="noopener noreferrer">
-              View on GitHub <i className="fab fa-github"></i>
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* Contact Me Section */}
-      <section id="contact" className="section contact-me-section">
-        <h2>Contact Me</h2>
-        <div className="contact-details">
-          <div className="contact-info">
-            <a href="mailto:fyoussef@zagmail.gonzaga.edu" className="contact-item">
-              <i className="fas fa-envelope"></i> fyoussef@zagmail.gonzaga.edu
-            </a>
-            <a href="mailto:itsfadyy02@gmail.com" className="contact-item">
-              <i className="fas fa-phone"></i>
-            </a>
-            <span className="contact-item">
-              <i className="fas fa-map-marker-alt"></i> Spokane, WA
-            </span>
-          </div>
-          <div className="social-links">
-            <a href="https://www.linkedin.com/in/justfadyy/" target="_blank" rel="noopener noreferrer" className="social-item">
-              <i className="fab fa-linkedin"></i> LinkedIn
-            </a>
-            <a href="https://github.com/JustFady" target="_blank" rel="noopener noreferrer" className="social-item">
-              <i className="fab fa-github"></i> GitHub
-            </a>
-            <a href="/Youssef_Fady_Developer_Intern-4.pdf" target="_blank" rel="noopener noreferrer" className="social-item">
-              <i className="fas fa-file"></i> Resume
-            </a>
-          </div>
-        </div>
-        <form className="contact-form">
-          <input type="text" name="name" placeholder="Name" required />
-          <input type="email" name="email" placeholder="Email" required />
-          <input type="text" name="subject" placeholder="Subject" required />
-          <textarea name="message" placeholder="Message" required></textarea>
-          <button type="submit" className="send-button">Send Message</button>
-        </form>
-      </section>
-
-      <footer className="footer">
-        <p>Designed & Built by Fady Youssef</p>
-        <p>© 2025 All rights reserved.</p>
       </footer>
     </div>
   );
