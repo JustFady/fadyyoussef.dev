@@ -238,12 +238,6 @@ function App() {
           <a href="mailto:fyoussef@zagmail.gonzaga.edu" className="footer-email">
             fyoussef@zagmail.gonzaga.edu
           </a>
-          <div className="contact-grid">
-            <div>
-              <span className="contact-label">Based in</span>
-              <p>Spokane, Washington</p>
-            </div>
-          </div>
           <div className="footer-links">
             <a href="https://github.com/JustFady" target="_blank" rel="noreferrer">
               GitHub
