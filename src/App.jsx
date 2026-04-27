@@ -1,57 +1,57 @@
 import React, { useEffect } from 'react';
-import Globe from './Globe';
 import './App.css';
 
+// Update this array whenever you want to add, remove, or rewrite projects on the site.
 const projects = [
   {
-    title: 'HoopMetrics',
-    category: 'Analytics Platform',
-    desc: 'A basketball intelligence platform that turns real-time player and team data into fast, readable performance insights for coaches, athletes, and fans.',
-    tech: ['React', 'Node.js', 'MongoDB'],
+    title: 'Universal Sensor Board',
+    category: 'Embedded Systems',
+    desc: 'Senior design firmware work for the Apollo3 MCU focused on collecting, processing, and validating live environmental sensor data for an industrial IoT platform.',
+    tech: ['C', 'C++', 'Firmware', 'J-Link'],
     link: 'https://github.com/JustFady',
   },
   {
-    title: 'Hospital Management System',
-    category: 'Operations Software',
-    desc: 'A full workflow system for patient records, staff coordination, and scheduling designed to make day-to-day hospital operations more reliable.',
-    tech: ['Java', 'Spring Boot', 'MySQL'],
-    link: 'https://github.com/JustFady/HospitalManagement',
+    title: 'Heat Transfer Modeling',
+    category: 'Simulation Project',
+    desc: 'A C# desktop simulation that models heat transfer between a steel ball and boiling water with live temperature updates, visualization, and CSV export for analysis.',
+    tech: ['C#', '.NET', 'Simulation', 'Data Export'],
+    link: 'https://github.com/JustFady/HeatTransfer',
+  },
+  {
+    title: 'HoopMetrics',
+    category: 'Data and Analytics',
+    desc: 'A basketball analytics tool that fetches NBA player data, stores it in AWS, and turns performance trends into visuals that are faster to scan and compare.',
+    tech: ['Python', 'AWS S3', 'Data Pipelines'],
+    link: 'https://github.com/JustFady/HoopMetrics',
   },
   {
     title: 'Three Classic Ciphers',
     category: 'Security Fundamentals',
-    desc: 'A compact C++ implementation of classic encryption algorithms built to explore core cryptography ideas and careful systems programming.',
-    tech: ['C++', 'Cryptography'],
+    desc: 'A compact C++ implementation of classical encryption algorithms built to explore cryptography concepts, algorithm design, and careful systems programming.',
+    tech: ['C++', 'Cryptography', 'Security'],
     link: 'https://github.com/JustFady/ThreeClassicCiphers',
-  },
-  {
-    title: 'Heat Transfer',
-    category: 'Simulation Project',
-    desc: 'A C# and .NET project focused on modeling heat transfer behavior with an emphasis on technical accuracy and clear implementation.',
-    tech: ['C#', '.NET'],
-    link: 'https://github.com/JustFady/HeatTransfer',
   },
 ];
 
 const strengths = [
   {
     title: 'Full-stack systems',
-    copy: 'I like products that need both a polished interface and dependable backend logic. My best work lives where those two worlds have to cooperate cleanly.',
+    copy: 'I like products that need both a polished interface and dependable backend logic. My best work lives where frontend clarity and backend structure have to meet in the middle.',
   },
   {
-    title: 'Sharp problem solving',
-    copy: 'I enjoy the hard part: clarifying messy requirements, breaking problems down, and finding solutions that stay readable after the deadline passes.',
+    title: 'Security-minded thinking',
+    copy: 'My coursework leans into software security, and I like approaching systems with an eye for trust, resilience, and how things behave under pressure.',
   },
   {
-    title: 'Built for momentum',
-    copy: 'I care about building things that move teams forward, whether that means shipping features, improving workflows, or making the codebase easier to trust.',
+    title: 'Leadership and mentoring',
+    copy: 'From tutoring high school seniors to competing in team-based cyber challenges, I like work that blends technical execution with steady collaboration.',
   },
 ];
 
 const stats = [
-  { value: '4+', label: 'portfolio projects' },
-  { value: 'CS', label: 'student at Gonzaga' },
-  { value: '100%', label: 'focus on usable software' },
+  { value: '26', label: 'public repositories' },
+  { value: 'B.S.', label: 'computer science at Gonzaga' },
+  { value: 'Sec', label: 'software security focus' },
 ];
 
 function App() {
@@ -80,34 +80,30 @@ function App() {
     <div className="app-shell">
       <div className="page-noise" aria-hidden="true" />
 
-      <header className="topbar" data-reveal>
-        <a href="#home" className="brand">
-          FY
-        </a>
-        <nav className="topnav" aria-label="Primary">
-          <a href="#about">About</a>
-          <a href="#work">Work</a>
-          <a href="#contact">Contact</a>
-        </nav>
-      </header>
-
       <main>
         <section id="home" className="hero" data-reveal>
           <div className="hero-copy">
             <p className="eyebrow">Portfolio 2026</p>
-            <h1>Fady Youssef builds software with clarity, pace, and taste.</h1>
+            <h1>Fady Youssef builds sharp software with clean execution.</h1>
             <p className="hero-text">
-              Computer Science student at Gonzaga University focused on full-stack
-              development, thoughtful interfaces, and products that feel sharp from
-              the first click.
+              Senior at Gonzaga University studying Computer Science with a software
+              security concentration and a minor in Applied Mathematics, building
+              full-stack projects with strong interfaces and practical technical depth.
             </p>
+
+            <div className="hero-highlights">
+              <span>Teaching Assistant</span>
+              <span>Data Engineering Intern</span>
+              <span>Software Security</span>
+              <span>Embedded Systems</span>
+            </div>
 
             <div className="hero-actions">
               <a href="#work" className="button button-primary">
                 View work
               </a>
               <a
-                href="/Youssef_Fady_Developer_Intern-4.pdf"
+                href="/Fady_Youssef_Resume-1.pdf"
                 className="button button-secondary"
                 target="_blank"
                 rel="noreferrer"
@@ -125,19 +121,6 @@ function App() {
               ))}
             </div>
           </div>
-
-          <div className="hero-visual">
-            <div className="hero-panel">
-              <div className="panel-header">
-                <span />
-                <span />
-                <span />
-              </div>
-              <div className="panel-body">
-                <Globe />
-              </div>
-            </div>
-          </div>
         </section>
 
         <section id="about" className="section section-split" data-reveal>
@@ -148,11 +131,11 @@ function App() {
 
           <div className="about-grid">
             <p className="about-copy">
-              I am a junior pursuing a B.S. in Computer Science, and I like work that
-              balances engineering discipline with a strong user experience. That
-              usually means building dependable systems, making technical information
-              easier to understand, and shaping interfaces that feel considered instead
-              of accidental.
+              I am a senior pursuing a B.S. in Computer Science at Gonzaga University
+              with a software security concentration and a minor in Applied Mathematics.
+              I like work that balances engineering discipline with a strong user
+              experience, whether that means building dependable systems, clarifying
+              technical complexity, or shaping interfaces that feel intentional.
             </p>
 
             <div className="strength-grid">
@@ -171,6 +154,12 @@ function App() {
             <p className="eyebrow">Selected work</p>
             <h2>Projects that show how I think, build, and refine.</h2>
           </div>
+
+          <p className="section-intro">
+            The list below is meant to be easy to keep fresh. Swap projects in and
+            out as your work changes, and use each card to emphasize what mattered
+            most in the build.
+          </p>
 
           <div className="project-list">
             {projects.map((project, index) => (
@@ -216,23 +205,23 @@ function App() {
             <div className="insight-quote">
               <p>
                 Good software should feel fast, composed, and easy to understand. I
-                try to build with that standard even when the project is technically
-                dense.
+                try to build with that standard whether the project is data-heavy,
+                security-focused, or just needs clearer product thinking.
               </p>
             </div>
 
             <div className="insight-list">
               <div>
                 <h3>Technical range</h3>
-                <p>React, Node.js, Java, Spring Boot, MongoDB, MySQL, C#, and C++.</p>
+                <p>React, Node.js, Java, Spring Boot, MongoDB, MySQL, Python, C#, and C++.</p>
               </div>
               <div>
-                <h3>Working style</h3>
-                <p>Structured, collaborative, and focused on momentum without losing code quality.</p>
+                <h3>Security and competition</h3>
+                <p>Active in Spokane Cyber Cup with hands-on exposure to vulnerability discovery, defense, and attack simulation work.</p>
               </div>
               <div>
-                <h3>Current base</h3>
-                <p>Spokane, Washington with roots in product thinking and engineering fundamentals.</p>
+                <h3>Community and communication</h3>
+                <p>Based in Spokane, Washington and experienced in mentoring students through academic support and college application guidance.</p>
               </div>
             </div>
           </div>
@@ -244,8 +233,9 @@ function App() {
           <p className="eyebrow">Contact</p>
           <h2>Let&apos;s build something that feels finished.</h2>
           <p>
-            Reach out for internships, collaborations, or projects that need clean
-            execution and a strong interface.
+            Reach out for internships, engineering roles, collaborations, or teams
+            that need someone comfortable across product thinking, implementation,
+            and security-aware problem solving.
           </p>
         </div>
 
@@ -253,12 +243,28 @@ function App() {
           <a href="mailto:fyoussef@zagmail.gonzaga.edu" className="footer-email">
             fyoussef@zagmail.gonzaga.edu
           </a>
+          <div className="contact-grid">
+            <div>
+              <span className="contact-label">Based in</span>
+              <p>Spokane, Washington</p>
+            </div>
+            <div>
+              <span className="contact-label">Phone</span>
+            </div>
+            <div>
+              <span className="contact-label">Open to</span>
+              <p>Internships, full-stack roles, and engineering teams with product depth.</p>
+            </div>
+          </div>
           <div className="footer-links">
             <a href="https://github.com/JustFady" target="_blank" rel="noreferrer">
               GitHub
             </a>
-            <a href="https://linkedin.com/in/justfadyy" target="_blank" rel="noreferrer">
+            <a href="https://www.linkedin.com/in/fadyyoussef08/" target="_blank" rel="noreferrer">
               LinkedIn
+            </a>
+            <a href="/Fady_Youssef_Resume-1.pdf" target="_blank" rel="noreferrer">
+              Resume
             </a>
           </div>
           <p className="footer-note">© 2026 Fady Youssef</p>

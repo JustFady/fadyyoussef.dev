@@ -28,9 +28,10 @@ body {
   min-width: 320px;
   min-height: 100vh;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 25%),
-    linear-gradient(135deg, #08121a 0%, #091923 42%, #050c12 100%);
+    linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent 25%),
+    linear-gradient(135deg, #070e14 0%, #08141c 42%, #04090d 100%);
   color: var(--text-primary);
+  overflow-x: hidden;
 }
 
 body::before {
@@ -39,10 +40,10 @@ body::before {
   inset: 0;
   pointer-events: none;
   background-image:
-    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-  background-size: 72px 72px;
-  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.48), transparent 85%);
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(circle at 50% 50%, black, transparent 90%);
   z-index: -1;
 }
 
