@@ -85,41 +85,6 @@ function App() {
           <div className="hero-copy">
             <p className="eyebrow">Portfolio 2026</p>
             <h1>Fady Youssef builds sharp software with clean execution.</h1>
-            <p className="hero-text">
-              Senior at Gonzaga University studying Computer Science with a software
-              security concentration and a minor in Applied Mathematics, building
-              full-stack projects with strong interfaces and practical technical depth.
-            </p>
-
-            <div className="hero-highlights">
-              <span>Teaching Assistant</span>
-              <span>Data Engineering Intern</span>
-              <span>Software Security</span>
-              <span>Embedded Systems</span>
-            </div>
-
-            <div className="hero-actions">
-              <a href="#work" className="button button-primary">
-                View work
-              </a>
-              <a
-                href="/resume.pdf"
-                className="button button-secondary"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Resume
-              </a>
-            </div>
-
-            <div className="stat-row">
-              {stats.map((stat) => (
-                <div key={stat.label} className="stat-tile">
-                  <span>{stat.value}</span>
-                  <p>{stat.label}</p>
-                </div>
-              ))}
-            </div>
           </div>
         </section>
 
