@@ -210,7 +210,6 @@ function App() {
             <a href="/resume.pdf" target="_blank" rel="noreferrer">Resume</a>
           </nav>
           
-          <p className="footer-note">© 2026 Fady Youssef</p>
         </div>
       </footer>
     </div>
