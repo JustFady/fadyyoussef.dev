@@ -230,7 +230,7 @@ function App() {
 
       <footer id="contact" className="footer" data-reveal>
         <p className="eyebrow">Contact</p>
-        <h2 className="footer-headline" style={{ whiteSpace: 'nowrap', fontSize: 'clamp(1rem, 2vw, 1.4rem)', margin: '8px 0' }}>
+        <h2 className="footer-headline" style={{ whiteSpace: 'nowrap', fontSize: 'clamp(1.4rem, 4vw, 3rem)', margin: '12px 0' }}>
           Let&apos;s connect and build something cool.
         </h2>
 
