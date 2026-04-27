@@ -341,7 +341,7 @@
 
 .footer {
   width: 100%;
-  margin-top: 80px;
+  margin-top: 32px;
   padding: 16px 24px;
   border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.07);
@@ -355,7 +355,7 @@
 
 .footer-headline {
   font-family: var(--font-display);
-  font-size: clamp(1rem, 2.7vw, 2.2rem);
+  font-size: clamp(1rem, 2.2vw, 1.8rem);
   font-weight: 600;
   line-height: 1;
   white-space: nowrap !important;
