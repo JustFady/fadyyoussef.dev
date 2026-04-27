@@ -232,7 +232,7 @@ function App() {
         <div className="footer-content">
           <div className="footer-top">
             <p className="eyebrow">Contact</p>
-            <h2 className="footer-heading">Let&apos;s build something exceptional together.</h2>
+            <h2 className="footer-heading">Let&apos;s connect and build something cool.</h2>
           </div>
 
           <div className="footer-bottom">
