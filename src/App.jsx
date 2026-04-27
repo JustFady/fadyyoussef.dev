@@ -103,7 +103,7 @@ function App() {
                 View work
               </a>
               <a
-                href="/Fady_Youssef_Resume-1.pdf"
+                href="/resume.pdf"
                 className="button button-secondary"
                 target="_blank"
                 rel="noreferrer"
@@ -232,11 +232,6 @@ function App() {
         <div className="footer-copy">
           <p className="eyebrow">Contact</p>
           <h2>Let&apos;s build something that feels finished.</h2>
-          <p>
-            Reach out for internships, engineering roles, collaborations, or teams
-            that need someone comfortable across product thinking, implementation,
-            and security-aware problem solving.
-          </p>
         </div>
 
         <div className="footer-actions">
@@ -248,13 +243,6 @@ function App() {
               <span className="contact-label">Based in</span>
               <p>Spokane, Washington</p>
             </div>
-            <div>
-              <span className="contact-label">Phone</span>
-            </div>
-            <div>
-              <span className="contact-label">Open to</span>
-              <p>Internships, full-stack roles, and engineering teams with product depth.</p>
-            </div>
           </div>
           <div className="footer-links">
             <a href="https://github.com/JustFady" target="_blank" rel="noreferrer">
@@ -263,7 +251,7 @@ function App() {
             <a href="https://www.linkedin.com/in/fadyyoussef08/" target="_blank" rel="noreferrer">
               LinkedIn
             </a>
-            <a href="/Fady_Youssef_Resume-1.pdf" target="_blank" rel="noreferrer">
+            <a href="/resume.pdf" target="_blank" rel="noreferrer">
               Resume
             </a>
           </div>
