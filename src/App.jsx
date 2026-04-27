@@ -228,11 +228,9 @@ function App() {
         </section>
       </main>
 
-      <footer id="contact" className="footer" data-reveal style={{ alignItems: 'center', textAlign: 'center' }}>
+      <footer id="contact" className="footer" data-reveal>
         <p className="eyebrow">Contact</p>
-        <h2 className="footer-headline" style={{ whiteSpace: 'nowrap', fontSize: 'clamp(1.4rem, 4vw, 3rem)', margin: '12px 0', width: '100%' }}>
-          Let&apos;s connect and build something cool.
-        </h2>
+        <h2 className="footer-headline">Let&apos;s connect and build something cool.</h2>
 
         <div className="footer-bottom">
           <a href="mailto:thefady4@gmail.com" className="footer-email">
