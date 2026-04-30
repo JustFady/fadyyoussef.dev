@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Connected particles">
+  <defs>
+    <linearGradient id="mark" x1="12" y1="10" x2="52" y2="54" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#28ff7a"/>
+      <stop offset="0.35" stop-color="#24b8ff"/>
+      <stop offset="0.7" stop-color="#a855ff"/>
+      <stop offset="1" stop-color="#ff305c"/>
+    </linearGradient>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="2.4" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="#050505"/>
+  <path d="M18 22 32 14 48 24 42 44 24 48 18 22Z" fill="none" stroke="url(#mark)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.78"/>
+  <path d="M18 22 42 44M32 14 24 48M48 24 24 48" fill="none" stroke="#ffffff" stroke-width="1.4" stroke-linecap="round" opacity="0.2"/>
+  <g filter="url(#glow)">
+    <circle cx="18" cy="22" r="4.5" fill="#28ff7a"/>
+    <circle cx="32" cy="14" r="4.5" fill="#24b8ff"/>
+    <circle cx="48" cy="24" r="4.5" fill="#a855ff"/>
+    <circle cx="42" cy="44" r="4.5" fill="#ff305c"/>
+    <circle cx="24" cy="48" r="4.5" fill="#24b8ff"/>
+  </g>
+</svg>
