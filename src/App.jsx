@@ -160,7 +160,7 @@ function App() {
           </div>
         </section>
 
-        <section className="section insight-band" data-reveal>
+        {/* <section className="section insight-band" data-reveal>
           <div className="section-heading">
             <p className="eyebrow">What I bring</p>
             <h2>I like shipping software that earns trust quickly.</h2>
@@ -190,7 +190,7 @@ function App() {
               </div>
             </div>
           </div>
-        </section>
+        </section> */}
       </main>
 
       <footer id="contact" className="footer" data-reveal>
