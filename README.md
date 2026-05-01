@@ -27,8 +27,8 @@ cd FY-Portfolio
 npm install
 npm run dev
 ```
+The local dev server will print a URL in your terminal.
 
-The local dev server will print a URL in your terminal, usually `http://localhost:5173`.
 
 ## Customize It
 
