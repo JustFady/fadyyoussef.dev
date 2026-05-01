@@ -62,10 +62,10 @@
 }
 
 .icon-bar {
-  position: absolute;
-  bottom: 48px;
   display: flex;
+  justify-content: center;
   gap: 32px;
+  margin-top: 10px;
   z-index: 10;
   pointer-events: auto;
 }
@@ -111,4 +111,34 @@
 .icon-link svg {
   width: 32px;
   height: 32px;
+}
+
+.site-footer {
+  position: absolute;
+  left: 24px;
+  bottom: 22px;
+  z-index: 10;
+  color: rgba(255, 255, 255, 0.52);
+  font-size: 0.82rem;
+  line-height: 1.4;
+  pointer-events: auto;
+}
+
+.site-footer a {
+  color: rgba(255, 255, 255, 0.78);
+  transition: color 0.2s ease;
+}
+
+.site-footer a:hover,
+.site-footer a:focus-visible {
+  color: var(--text-main);
+}
+
+@media (max-width: 640px) {
+  .site-footer {
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+    font-size: 0.76rem;
+  }
 }
