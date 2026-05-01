@@ -27,6 +27,39 @@
   pointer-events: auto;
 }
 
+.site-nav {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  pointer-events: auto;
+}
+
+.nav-tab {
+  min-width: 74px;
+  min-height: 36px;
+  padding: 0 14px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  background: rgba(8, 8, 10, 0.46);
+  color: rgba(255, 255, 255, 0.64);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.86rem;
+  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+}
+
+.nav-tab:hover,
+.nav-tab:focus-visible,
+.nav-tab.is-active {
+  border-color: rgba(36, 184, 255, 0.42);
+  background: rgba(36, 184, 255, 0.12);
+  color: var(--text-main);
+}
+
 .name {
   font-size: clamp(3.5rem, 10vw, 7rem);
   font-weight: 600;
@@ -118,6 +151,79 @@
   height: 36px;
 }
 
+.page-content {
+  z-index: 10;
+  width: min(860px, calc(100vw - 48px));
+  pointer-events: auto;
+}
+
+.page-kicker {
+  margin-bottom: 14px;
+  color: #24b8ff;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.page-content h1 {
+  max-width: 12ch;
+  margin-bottom: 18px;
+  font-size: clamp(2.8rem, 7vw, 5.8rem);
+  font-weight: 650;
+  letter-spacing: -0.04em;
+  line-height: 0.96;
+}
+
+.page-content p {
+  max-width: 680px;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: clamp(1rem, 2vw, 1.12rem);
+  line-height: 1.8;
+}
+
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 28px;
+}
+
+.project-card {
+  min-height: 210px;
+  padding: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  background: rgba(8, 8, 10, 0.5);
+  transition: border-color 0.2s ease, transform 0.2s ease, background 0.2s ease;
+}
+
+.project-card:hover,
+.project-card:focus-visible {
+  border-color: rgba(168, 85, 255, 0.5);
+  background: rgba(168, 85, 255, 0.12);
+  transform: translateY(-4px);
+}
+
+.project-card span {
+  display: block;
+  margin-bottom: 18px;
+  color: #28ff7a;
+  font-size: 0.76rem;
+}
+
+.project-card h2 {
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+  line-height: 1.2;
+}
+
+.project-card p {
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
 .site-footer {
   position: absolute;
   right: 24px;
@@ -140,6 +246,21 @@
 }
 
 @media (max-width: 640px) {
+  .site-nav {
+    top: 14px;
+    left: 14px;
+    right: 14px;
+    justify-content: flex-end;
+    gap: 6px;
+  }
+
+  .nav-tab {
+    min-width: auto;
+    min-height: 34px;
+    padding: 0 10px;
+    font-size: 0.78rem;
+  }
+
   .icon-bar {
     gap: 26px;
     margin-top: 24px;
@@ -160,5 +281,16 @@
     right: 16px;
     bottom: 16px;
     font-size: 0.76rem;
+    text-align: right;
+  }
+
+  .page-content {
+    width: min(100vw - 32px, 520px);
+  }
+
+  .project-grid {
+    grid-template-columns: 1fr;
+    max-height: 48vh;
+    overflow-y: auto;
   }
 }
