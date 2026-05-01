@@ -48,6 +48,7 @@ function ParticleBackground() {
     let width = 0;
     let height = 0;
     let particles = [];
+    let resizeTimeout;
     const pointer = {
       x: 0,
       y: 0,
@@ -76,6 +77,10 @@ function ParticleBackground() {
 
     const resize = () => {
       const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+      const previousWidth = width || window.innerWidth;
+      const previousHeight = height || window.innerHeight;
+      const previousParticles = particles;
+
       width = window.innerWidth;
       height = window.innerHeight;
 
@@ -84,7 +89,22 @@ function ParticleBackground() {
       canvas.style.width = `${width}px`;
       canvas.style.height = `${height}px`;
       ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
-      createParticles();
+
+      if (!previousParticles.length || Math.abs(width - previousWidth) > 120) {
+        createParticles();
+        return;
+      }
+
+      particles = previousParticles.map((particle) => ({
+        ...particle,
+        x: (particle.x / previousWidth) * width,
+        y: (particle.y / previousHeight) * height,
+      }));
+    };
+
+    const queueResize = () => {
+      window.clearTimeout(resizeTimeout);
+      resizeTimeout = window.setTimeout(resize, 120);
     };
 
     const draw = () => {
@@ -191,13 +211,14 @@ function ParticleBackground() {
     resize();
     draw();
 
-    window.addEventListener('resize', resize);
+    window.addEventListener('resize', queueResize);
     window.addEventListener('pointermove', handlePointerMove);
     window.addEventListener('pointerleave', handlePointerLeave);
 
     return () => {
       window.cancelAnimationFrame(animationFrame);
-      window.removeEventListener('resize', resize);
+      window.clearTimeout(resizeTimeout);
+      window.removeEventListener('resize', queueResize);
       window.removeEventListener('pointermove', handlePointerMove);
       window.removeEventListener('pointerleave', handlePointerLeave);
     };
