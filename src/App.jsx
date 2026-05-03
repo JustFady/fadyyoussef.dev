@@ -19,24 +19,59 @@ const NAV_ITEMS = [
 
 const PROJECTS = [
   {
-    title: 'Universal Sensor Board',
-    description: 'Firmware work for an Apollo3-based sensor platform focused on collecting and validating live environmental data.',
-    tech: 'C, C++, Firmware',
-    link: 'https://github.com/JustFady',
+    title: 'OurPL-Lang',
+    category: 'Systems',
+    description: 'A small programming language I built from scratch in Java, with a lexer, parser, interpreter, functions, closures, block scoping, and control flow.',
+    tags: ['Java', 'Maven', 'Interpreters'],
+    link: 'https://github.com/JustFady/OurPL-Lang',
+    accent: '#28ff7a',
+    featured: true,
   },
   {
-    title: 'Heat Transfer Modeling',
-    description: 'A desktop simulation for modeling heat transfer between a steel ball and boiling water with live updates and data export.',
-    tech: 'C#, .NET, Simulation',
-    link: 'https://github.com/JustFady/HeatTransfer',
+    title: 'Orderbook Organism',
+    category: 'Data Viz',
+    description: 'A React/Vite prototype that turns order-book activity into a replayable pressure landscape, built to make market microstructure easier to see and explain.',
+    tags: ['React', 'Vite', 'Data Replay'],
+    link: 'https://github.com/JustFady/orderbook-organism',
+    accent: '#24b8ff',
+    featured: true,
+  },
+  {
+    title: 'Global Homicide Monitor',
+    category: 'Data Viz',
+    description: 'An interactive dashboard for exploring homicide rates, firearm violence, and safety stats across countries and cities with a 3D globe and comparison tools.',
+    tags: ['React', 'Three.js', 'Recharts'],
+    link: 'https://github.com/JustFady/Global-Homicide-Monitor',
+    accent: '#ff305c',
+    featured: true,
+  },
+  {
+    title: 'CrimsonCode2026',
+    category: 'Mobile',
+    description: 'A Kotlin Multiplatform emergency-response app with OTP flow, settings, contacts, map/list event browsing, and Supabase-backed event creation paths.',
+    tags: ['Kotlin', 'Compose', 'Supabase'],
+    link: 'https://github.com/JustFady/CrimsonCode2026',
+    accent: '#ffb020',
+  },
+  {
+    title: 'GU Phishing Awareness',
+    category: 'Security',
+    description: 'A static training demo that shows how convincing credential phishing can look, then teaches people what to check before trusting a reset page.',
+    tags: ['Security', 'HTML', 'GitHub Pages'],
+    link: 'https://github.com/JustFady/GU-Phishing-Awareness',
+    accent: '#a855ff',
   },
   {
     title: 'HoopMetrics',
-    description: 'A basketball analytics project for gathering player data and turning performance trends into clearer visuals.',
-    tech: 'Python, AWS, Data',
+    category: 'Data',
+    description: 'A basketball analytics tool that pulls NBA player data, stores stats in S3, and turns performance trends into simple visual insights.',
+    tags: ['Python', 'AWS S3', 'Analytics'],
     link: 'https://github.com/JustFady/HoopMetrics',
+    accent: '#24b8ff',
   },
 ];
+
+const PROJECT_FILTERS = ['All', ...Array.from(new Set(PROJECTS.map((project) => project.category)))];
 
 function ParticleBackground() {
   const canvasRef = useRef(null);
@@ -231,6 +266,11 @@ function App() {
   const [titleIndex, setTitleIndex] = useState(0);
   const [fadeProp, setFadeProp] = useState('fade-in');
   const [activeTab, setActiveTab] = useState('home');
+  const [activeProjectFilter, setActiveProjectFilter] = useState('All');
+
+  const visibleProjects = activeProjectFilter === 'All'
+    ? PROJECTS
+    : PROJECTS.filter((project) => project.category === activeProjectFilter);
 
   useEffect(() => {
     const timeout = setInterval(() => {
@@ -318,12 +358,40 @@ function App() {
         <section className="page-content projects-content">
           <p className="page-kicker">Projects</p>
           <h1>Selected work</h1>
+          <div className="project-toolbar" aria-label="Filter projects">
+            {PROJECT_FILTERS.map((filter) => (
+              <button
+                key={filter}
+                type="button"
+                className={`project-filter ${activeProjectFilter === filter ? 'is-active' : ''}`}
+                aria-pressed={activeProjectFilter === filter}
+                onClick={() => setActiveProjectFilter(filter)}
+              >
+                {filter}
+              </button>
+            ))}
+          </div>
           <div className="project-grid">
-            {PROJECTS.map((project) => (
-              <a key={project.title} className="project-card" href={project.link} target="_blank" rel="noreferrer">
-                <span>{project.tech}</span>
+            {visibleProjects.map((project) => (
+              <a
+                key={project.title}
+                className={`project-card ${project.featured ? 'is-featured' : ''}`}
+                href={project.link}
+                target="_blank"
+                rel="noreferrer"
+                style={{ '--project-accent': project.accent }}
+              >
+                <div className="project-card-topline">
+                  <span>{project.category}</span>
+                  <strong>Repo</strong>
+                </div>
                 <h2>{project.title}</h2>
                 <p>{project.description}</p>
+                <ul className="project-tags" aria-label={`${project.title} technologies`}>
+                  {project.tags.map((tag) => (
+                    <li key={tag}>{tag}</li>
+                  ))}
+                </ul>
               </a>
             ))}
           </div>
