@@ -71,7 +71,7 @@ const PROJECTS = [
   },
 ];
 
-const PROJECT_FILTERS = ['All', ...Array.from(new Set(PROJECTS.map((project) => project.category)))];
+
 
 function ParticleBackground() {
   const canvasRef = useRef(null);
@@ -266,11 +266,7 @@ function App() {
   const [titleIndex, setTitleIndex] = useState(0);
   const [fadeProp, setFadeProp] = useState('fade-in');
   const [activeTab, setActiveTab] = useState('home');
-  const [activeProjectFilter, setActiveProjectFilter] = useState('All');
 
-  const visibleProjects = activeProjectFilter === 'All'
-    ? PROJECTS
-    : PROJECTS.filter((project) => project.category === activeProjectFilter);
 
   useEffect(() => {
     const timeout = setInterval(() => {
@@ -358,21 +354,8 @@ function App() {
         <section className="page-content projects-content">
           <p className="page-kicker">Projects</p>
           <h1>Selected work</h1>
-          <div className="project-toolbar" aria-label="Filter projects">
-            {PROJECT_FILTERS.map((filter) => (
-              <button
-                key={filter}
-                type="button"
-                className={`project-filter ${activeProjectFilter === filter ? 'is-active' : ''}`}
-                aria-pressed={activeProjectFilter === filter}
-                onClick={() => setActiveProjectFilter(filter)}
-              >
-                {filter}
-              </button>
-            ))}
-          </div>
           <div className="project-grid">
-            {visibleProjects.map((project) => (
+            {PROJECTS.map((project) => (
               <a
                 key={project.title}
                 className={`project-card ${project.featured ? 'is-featured' : ''}`}
@@ -383,7 +366,6 @@ function App() {
               >
                 <div className="project-card-topline">
                   <span>{project.category}</span>
-                  <strong>Repo</strong>
                 </div>
                 <h2>{project.title}</h2>
                 <p>{project.description}</p>

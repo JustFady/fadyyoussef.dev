@@ -44,7 +44,7 @@ Main styling lives in `src/App.css`, including the responsive mobile rules and t
 Static files live in `public/`:
 
 - `resume.pdf`
-- `favicon.svg`
+- `favicon.png`
 - `CNAME` for the custom domain
 
 ## Build
