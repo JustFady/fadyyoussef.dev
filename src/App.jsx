@@ -278,6 +278,8 @@ function App() {
   const [titleIndex, setTitleIndex] = useState(0);
   const [fadeProp, setFadeProp] = useState('fade-in');
   const [activeTab, setActiveTab] = useState('home');
+  const [selectedProjectIndex, setSelectedProjectIndex] = useState(0);
+  const selectedProject = PROJECTS[selectedProjectIndex];
 
 
   useEffect(() => {
@@ -366,25 +368,43 @@ function App() {
         <section className="page-content projects-content">
           <p className="page-kicker">Projects</p>
           <h1>Selected work</h1>
-          <div className="project-grid">
-            {PROJECTS.map((project) => (
-              <a
-                key={project.title}
-                className="project-card"
-                href={project.link}
-                target="_blank"
-                rel="noreferrer"
-                style={{ '--project-accent': project.accent }}
-              >
-                <h2>{project.title}</h2>
-                <p>{project.description}</p>
-                <ul className="project-tags" aria-label={`${project.title} technologies`}>
-                  {project.tags.map((tag) => (
+          <div className="project-focus">
+            <div className="project-list" aria-label="Projects">
+              {PROJECTS.map((project, index) => (
+                <button
+                  key={project.title}
+                  type="button"
+                  className={`project-list-item ${selectedProjectIndex === index ? 'is-active' : ''}`}
+                  style={{ '--project-accent': project.accent }}
+                  aria-pressed={selectedProjectIndex === index}
+                  onClick={() => setSelectedProjectIndex(index)}
+                >
+                  <span>{String(index + 1).padStart(2, '0')}</span>
+                  <strong>{project.title}</strong>
+                  <small>{project.tags.slice(0, 2).join(' / ')}</small>
+                </button>
+              ))}
+            </div>
+
+            <article className="project-detail" style={{ '--project-accent': selectedProject.accent }}>
+              <div className="project-detail-content">
+                <h2>{selectedProject.title}</h2>
+                <p>{selectedProject.description}</p>
+                <ul className="project-tags" aria-label={`${selectedProject.title} technologies`}>
+                  {selectedProject.tags.map((tag) => (
                     <li key={tag}>{tag}</li>
                   ))}
                 </ul>
+              </div>
+              <a
+                className="project-detail-link"
+                href={selectedProject.link}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Open on GitHub
               </a>
-            ))}
+            </article>
           </div>
         </section>
       )}
