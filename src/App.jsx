@@ -3,55 +3,79 @@ import './App.css';
 
 const ROLES = ['Software Engineer', 'AI Integrations & MCP', 'Embedded Firmware', 'Security-Minded Builder'];
 const PARTICLE_COLORS = ['#28ff7a', '#24b8ff', '#a855ff', '#ff305c'];
-const EMAIL = 'mailto:thefady4@gmail.com?subject=Project%20inquiry';
+const EMAIL = 'mailto:thefady4@gmail.com?subject=Hello%20from%20your%20site';
 const LINKEDIN = 'https://www.linkedin.com/in/fadyyoussef08/';
 const GITHUB = 'https://github.com/JustFady';
-const CALENDLY = ''; // e.g. 'https://calendly.com/fadyyoussef/intro' — booking buttons appear once set
+const CALENDLY = ''; // e.g. 'https://calendly.com/fadyyoussef/intro' — a booking button appears once set
 
 const SECTIONS = [
   { id: 'top', label: 'Home' },
-  { id: 'services', label: 'Services' },
-  { id: 'process', label: 'Process' },
+  { id: 'work', label: 'Work' },
+  { id: 'about', label: 'About' },
   { id: 'contact', label: 'Contact' },
 ];
 
-const SERVICES = [
+const PROJECTS = [
   {
-    title: 'AI Automation Sprint',
-    price: '$1,500',
-    timeline: '5 business days',
-    blurb: 'One workflow automated end to end on your own accounts: inbound email triage with drafted replies, PDFs into structured data, weekly reports, CRM updates.',
-    bullets: ['Claude API, MCP, n8n or Zapier', '1-page runbook and handoff call', '14 days of fixes included'],
+    title: 'mcp-serial',
+    description: 'An MCP server that lets Claude open a serial console, send commands, tail firmware logs with filters, and flash STM32/ESP32 boards behind an explicit confirm and an allow-listed firmware directory.',
+    tags: ['Python', 'MCP', 'Embedded'],
+    link: 'https://github.com/JustFady/mcp-serial',
     accent: '#28ff7a',
   },
   {
-    title: 'LLM Feature or MCP Server',
-    price: '$3,500–6,000',
-    timeline: '2–3 weeks',
-    blurb: 'An assistant or agent inside your product, or an MCP server so Claude, ChatGPT and Cursor can operate your API, with auth, tests, logging and evals.',
-    bullets: ['Scope fixed in a 1-page SOW', '50% to start, 50% on delivery', 'Retainers for ongoing iteration'],
+    title: 'Aegis',
+    description: 'A pre-commit guardrail that audits the staged git diff for security issues with an LLM, caches verdicts per file-diff in SQLite, and offers to apply the suggested fix before the commit goes through.',
+    tags: ['TypeScript', 'Security', 'CLI'],
+    link: 'https://github.com/JustFady/Aegis',
     accent: '#24b8ff',
   },
   {
-    title: 'Embedded + Edge AI',
-    price: '$65/hr',
-    timeline: 'or fixed quote',
-    blurb: 'STM32, ESP32 and Raspberry Pi firmware, FreeRTOS tasks and drivers, device-to-cloud telemetry, on-device inference, serial and J-Link test tooling.',
-    bullets: ['Tested on real hardware', 'CI for firmware builds', 'Drivers and integrations from $1,200'],
+    title: 'kinetic-edge',
+    description: 'A local video-AI pipeline in C++ and Python that tracks players and the ball with YOLOv8, flags boundary violations and acceleration spikes, and ships as a Docker-packaged desktop tool.',
+    tags: ['C++', 'Python', 'YOLOv8'],
+    link: 'https://github.com/JustFady/kinetic-edge',
     accent: '#a855ff',
+  },
+  {
+    title: 'OurPL-Lang',
+    description: 'A small programming language built from scratch in Java: hand-written lexer and recursive-descent parser, tree-walking interpreter, functions, closures, block scoping and control flow, with an automated test suite.',
+    tags: ['Java', 'Interpreters', 'Parsing'],
+    link: 'https://github.com/JustFady/OurPL-Lang',
+    accent: '#ffb020',
+  },
+  {
+    title: 'Orderbook Organism',
+    description: 'A React prototype that turns order-book activity into a replayable pressure landscape, built to make market microstructure easier to see and explain.',
+    tags: ['React', 'Vite', 'Data replay'],
+    link: 'https://github.com/JustFady/orderbook-organism',
+    accent: '#ff305c',
+  },
+  {
+    title: 'CrimsonCode 2026',
+    description: 'A Kotlin Multiplatform emergency-response app with an OTP flow, contacts, map and list event browsing, and Supabase-backed event creation, built at a 24-hour hackathon.',
+    tags: ['Kotlin', 'Compose', 'Supabase'],
+    link: 'https://github.com/JustFady/CrimsonCode2026',
+    accent: '#24b8ff',
   },
 ];
 
-const STEPS = [
-  { n: '01', title: '20-minute call', text: 'You describe the workflow or feature. I ask the questions that matter and tell you if it is not worth building.' },
-  { n: '02', title: 'One-page scope', text: 'Fixed price, timeline, and exactly what you get. Nothing starts until you have approved it.' },
-  { n: '03', title: 'Ship with daily notes', text: 'A short progress note every day, a runbook at the end, and the code lives in your repo.' },
-];
-
-const PROOF = [
-  { title: 'mcp-serial', link: 'https://github.com/JustFady/mcp-serial' },
-  { title: 'Aegis', link: 'https://github.com/JustFady/Aegis' },
-  { title: 'kinetic-edge', link: 'https://github.com/JustFady/kinetic-edge' },
+const FACETS = [
+  {
+    title: 'AI integrations',
+    text: 'Agents with tools, MCP servers, retrieval over real documents, and LLM features that ship with evals and logging instead of demos.',
+    accent: '#24b8ff',
+  },
+  {
+    title: 'Embedded systems',
+    text: 'Firmware on STM32, ESP32 and Apollo3 with FreeRTOS, SPI/I2C drivers, J-Link debugging, and telemetry from the device to the cloud.',
+    accent: '#28ff7a',
+  },
+  {
+    title: 'Security-minded by default',
+    text: 'Gonzaga CS with a software-security concentration; I build tools like Aegis and phishing-awareness training because the threat model is part of the design.',
+    accent: '#a855ff',
+  },
 ];
 
 const reducedMotion = () =>
@@ -427,26 +451,21 @@ function App() {
           <div className="hero-inner">
             <p className="hero-status">
               <span className="hero-dot" />
-              Available for projects · Austin, TX · remote
+              Open to select projects · Austin, TX
             </p>
             <h1 className="hero-name">Fady Youssef</h1>
             <RotatingRole />
             <p className="hero-lead">
-              I build AI integrations that run in production, and I can take them all the way down to the firmware.
+              I build software with a security-minded edge: AI integrations that run in production, firmware that
+              talks to real hardware, and tools that make both easier to trust.
             </p>
             <div className="hero-actions">
-              <a className="btn btn-primary" href="#services">
-                See what I build
+              <a className="btn btn-primary" href="#work">
+                See my work
               </a>
-              {CALENDLY ? (
-                <a className="btn" href={CALENDLY} target="_blank" rel="noreferrer">
-                  Book a 20-minute call
-                </a>
-              ) : (
-                <a className="btn" href={EMAIL}>
-                  Email me
-                </a>
-              )}
+              <a className="btn" href={GITHUB} target="_blank" rel="noreferrer">
+                GitHub
+              </a>
             </div>
             <div className="hero-social">
               <a href={GITHUB} target="_blank" rel="noreferrer" aria-label="GitHub">
@@ -460,80 +479,90 @@ function App() {
               </a>
             </div>
           </div>
-          <a className="scroll-cue" href="#services" aria-label="Scroll to services">
+          <a className="scroll-cue" href="#work" aria-label="Scroll to work">
             <span />
           </a>
         </section>
 
-        <section id="services" className="section">
+        <section id="work" className="section">
           <div className="section-head" data-reveal>
-            <p className="kicker">Services</p>
-            <h2>AI integrations, shipped.</h2>
+            <p className="kicker">Selected work</p>
+            <h2>Things I have built.</h2>
             <p className="lead">
-              Fixed-price projects for small teams: agents and MCP servers, LLM features inside your product, document
-              and email automations, and firmware when the problem goes down to the device. You own the code and get
-              a progress note every day.
+              A mix of tools I use, systems I wanted to understand, and problems that were more fun to solve than to
+              read about. Everything here is open source.
             </p>
           </div>
-          <div className="service-grid">
-            {SERVICES.map((service, index) => (
-              <article
-                key={service.title}
-                className="card service-card"
-                style={{ '--accent': service.accent, '--delay': `${index * 90}ms` }}
+          <div className="work-grid">
+            {PROJECTS.map((project, index) => (
+              <a
+                key={project.title}
+                className="card work-card"
+                href={project.link}
+                target="_blank"
+                rel="noreferrer"
+                style={{ '--accent': project.accent, '--delay': `${(index % 2) * 80}ms` }}
                 data-reveal
                 data-spotlight
               >
-                <h3>{service.title}</h3>
-                <p className="service-price">
-                  {service.price} <span>{service.timeline}</span>
-                </p>
-                <p className="service-blurb">{service.blurb}</p>
-                <ul>
-                  {service.bullets.map((bullet) => (
-                    <li key={bullet}>{bullet}</li>
+                <div className="work-top">
+                  <h3>{project.title}</h3>
+                  <span className="work-arrow" aria-hidden="true">
+                    ↗
+                  </span>
+                </div>
+                <p>{project.description}</p>
+                <ul className="work-tags" aria-label={`${project.title} technologies`}>
+                  {project.tags.map((tag) => (
+                    <li key={tag}>{tag}</li>
                   ))}
                 </ul>
-              </article>
+              </a>
             ))}
           </div>
-          <p className="service-proof" data-reveal>
-            Recent open source:{' '}
-            {PROOF.map((item, index) => (
-              <span key={item.title}>
-                <a href={item.link} target="_blank" rel="noreferrer">
-                  {item.title}
-                </a>
-                {index < PROOF.length - 1 ? ', ' : '.'}
-              </span>
-            ))}
+          <p className="work-more" data-reveal>
+            More on{' '}
+            <a href={GITHUB} target="_blank" rel="noreferrer">
+              github.com/JustFady
+            </a>
+            .
           </p>
         </section>
 
-        <section id="process" className="section">
+        <section id="about" className="section">
           <div className="section-head" data-reveal>
-            <p className="kicker">How it works</p>
-            <h2>Three steps, no surprises.</h2>
+            <p className="kicker">About</p>
+            <h2>Three things I keep coming back to.</h2>
+            <p className="lead">
+              Gonzaga University, B.S. Computer Science (2026) with a software-security concentration. Firmware
+              engineer by day. The rest of the time I am wiring language models into real systems, running, or
+              making beats.
+            </p>
           </div>
-          <ol className="steps">
-            {STEPS.map((step, index) => (
-              <li key={step.n} className="step" style={{ '--delay': `${index * 90}ms` }} data-reveal data-spotlight>
-                <span className="step-n">{step.n}</span>
-                <h3>{step.title}</h3>
-                <p>{step.text}</p>
-              </li>
+          <div className="facets">
+            {FACETS.map((facet, index) => (
+              <article
+                key={facet.title}
+                className="facet"
+                style={{ '--accent': facet.accent, '--delay': `${index * 90}ms` }}
+                data-reveal
+                data-spotlight
+              >
+                <h3>{facet.title}</h3>
+                <p>{facet.text}</p>
+              </article>
             ))}
-          </ol>
+          </div>
         </section>
 
         <section id="contact" className="section contact">
           <div className="contact-card" data-reveal data-spotlight>
             <p className="kicker">Contact</p>
-            <h2>Tell me about the workflow that eats your week.</h2>
+            <h2>Say hello.</h2>
             <p className="lead">
               {CALENDLY
-                ? 'Grab a 20-minute slot, or send one email. Either way you get two call options or a one-page scope within a day.'
-                : 'One email is enough. I reply within a day with two call slots or a one-page scope.'}
+                ? 'Open to select AI-integration and embedded projects. Book a 20-minute call or send an email; I reply within a day.'
+                : 'Open to select AI-integration and embedded projects. Send an email or a message on LinkedIn; I reply within a day.'}
             </p>
             <div className="hero-actions">
               {CALENDLY && (
@@ -545,10 +574,10 @@ function App() {
                 thefady4@gmail.com
               </a>
               <a className="btn" href={LINKEDIN} target="_blank" rel="noreferrer">
-                Message on LinkedIn
+                LinkedIn
               </a>
             </div>
-            <p className="contact-meta">Gonzaga CS ’26 · Austin, TX · remote-friendly</p>
+            <p className="contact-meta">Austin, TX · remote-friendly</p>
           </div>
         </section>
       </main>
