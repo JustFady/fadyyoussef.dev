@@ -195,3 +195,16 @@ main {
     transform: translateY(0);
   }
 }
+
+.copy-note {
+  height: 1.2em;
+  margin-top: 14px;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.copy-note.is-on {
+  opacity: 1;
+}

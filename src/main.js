@@ -147,4 +147,26 @@ function particles() {
 }
 
 
+/* Email icon copies the address (works for webmail users); falls back to mailto. */
+function copyEmail() {
+  const link = document.querySelector('.email-link');
+  const note = document.querySelector('.copy-note');
+  if (!link || !note || !navigator.clipboard) return;
+  let timer;
+  link.addEventListener('click', async (event) => {
+    event.preventDefault();
+    try {
+      await navigator.clipboard.writeText('itsfadyy02@gmail.com');
+      note.textContent = 'Email copied';
+    } catch {
+      window.location.href = link.href;
+      return;
+    }
+    note.classList.add('is-on');
+    clearTimeout(timer);
+    timer = setTimeout(() => note.classList.remove('is-on'), 1800);
+  });
+}
+
 particles();
+copyEmail();
