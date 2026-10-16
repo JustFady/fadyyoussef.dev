@@ -45,10 +45,10 @@ const PROJECTS = [
     accent: '#ffb020',
   },
   {
-    title: 'Orderbook Organism',
-    description: 'A React prototype that turns order-book activity into a replayable pressure landscape, built to make market microstructure easier to see and explain.',
-    tags: ['React', 'Vite', 'Data replay'],
-    link: 'https://github.com/JustFady/orderbook-organism',
+    title: 'inbox-triage',
+    description: 'Email automation shaped for trust: classify inbound mail, draft replies in your voice, queue them for human approval, log every decision, and measure accuracy on your own messages before turning it on.',
+    tags: ['Python', 'Claude API', 'Human-in-the-loop'],
+    link: 'https://github.com/JustFady/inbox-triage',
     accent: '#ff305c',
   },
   {
