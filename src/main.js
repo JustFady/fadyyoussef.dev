@@ -1,7 +1,6 @@
 import './style.css';
 
 const PARTICLE_COLORS = ['#28ff7a', '#24b8ff', '#a855ff', '#ff305c'];
-const ROLES = ['Software Engineer', 'AI Integrations & MCP', 'Embedded Firmware', 'Security-Minded Builder'];
 const reducedMotion = () => window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 
 /* Background: drifting particles. */
@@ -147,20 +146,5 @@ function particles() {
   document.addEventListener('visibilitychange', onVisibility);
 }
 
-/* Rotating role line. */
-function rotatingRole() {
-  const el = document.querySelector('.hero-role');
-  if (!el || reducedMotion()) return;
-  let index = 0;
-  setInterval(() => {
-    el.classList.replace('is-in', 'is-out');
-    setTimeout(() => {
-      index = (index + 1) % ROLES.length;
-      el.textContent = ROLES[index];
-      el.classList.replace('is-out', 'is-in');
-    }, 420);
-  }, 3600);
-}
 
 particles();
-rotatingRole();
