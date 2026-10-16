@@ -2,22 +2,46 @@ import React, { useEffect, useRef, useState } from 'react';
 import './App.css';
 
 const TITLES = [
-  'CS Student @ Gonzaga',
+  'Software Engineer',
+  'AI Integrations & MCP',
+  'Embedded Firmware',
+  'Security Enthusiast',
   'Language Designer',
   'Distance Runner',
-  'Beat Maker',
-  'Security Enthusiast'
+  'Beat Maker'
 ];
 
 const PARTICLE_COLORS = ['#28ff7a', '#24b8ff', '#a855ff', '#ff305c'];
 
 const NAV_ITEMS = [
   { id: 'home', label: 'Home' },
-  { id: 'about', label: 'About' },
+  { id: 'services', label: 'Services' },
   { id: 'projects', label: 'Projects' },
+  { id: 'about', label: 'About' },
 ];
 
 const PROJECTS = [
+  {
+    title: 'mcp-serial',
+    description: 'An MCP server that lets Claude open a serial console, send commands, tail firmware logs with filters, and flash STM32/ESP32 boards behind an explicit confirm and an allow-listed firmware directory.',
+    tags: ['Python', 'MCP', 'Embedded'],
+    link: 'https://github.com/JustFady/mcp-serial',
+    accent: '#28ff7a',
+  },
+  {
+    title: 'Aegis',
+    description: 'A pre-commit guardrail that audits the staged git diff for security issues with an LLM, caches verdicts per file-diff in SQLite, and offers to apply the suggested fix before the commit goes through.',
+    tags: ['TypeScript', 'Security', 'CLI'],
+    link: 'https://github.com/JustFady/Aegis',
+    accent: '#24b8ff',
+  },
+  {
+    title: 'kinetic-edge',
+    description: 'A local video-AI pipeline in C++ and Python that tracks players and the ball with YOLOv8, flags boundary violations and acceleration spikes, and ships as a Docker-packaged desktop tool.',
+    tags: ['C++', 'Python', 'YOLOv8'],
+    link: 'https://github.com/JustFady/kinetic-edge',
+    accent: '#a855ff',
+  },
   {
     title: 'OurPL-Lang',
     description: 'A small programming language I built from scratch in Java, with a lexer, parser, interpreter, functions, closures, block scoping, and control flow.',
@@ -83,7 +107,32 @@ const PROJECTS = [
   },
 ];
 
-
+const SERVICES = [
+  {
+    title: 'AI Automation Sprint',
+    price: '$1,500',
+    timeline: '5 business days',
+    blurb: 'One workflow automated end to end on your own accounts: inbound email triage with drafted replies, PDFs into structured data, weekly reports, CRM updates.',
+    bullets: ['Claude API, MCP, n8n or Zapier', '1-page runbook and handoff call', '14 days of fixes included'],
+    accent: '#28ff7a',
+  },
+  {
+    title: 'LLM Feature or MCP Server',
+    price: '$3,500–6,000',
+    timeline: '2–3 weeks',
+    blurb: 'An assistant or agent inside your product, or an MCP server so Claude, ChatGPT and Cursor can operate your API, with auth, tests, logging and evals.',
+    bullets: ['Scope fixed in a 1-page SOW', '50% to start, 50% on delivery', 'Retainers for ongoing iteration'],
+    accent: '#24b8ff',
+  },
+  {
+    title: 'Embedded + Edge AI',
+    price: '$65/hr',
+    timeline: 'or fixed quote',
+    blurb: 'STM32, ESP32 and Raspberry Pi firmware, FreeRTOS tasks and drivers, device-to-cloud telemetry, on-device inference, serial and J-Link test tooling.',
+    bullets: ['Tested on real hardware', 'CI for firmware builds', 'Drivers and integrations from $1,200'],
+    accent: '#a855ff',
+  },
+];
 
 function ParticleBackground() {
   const canvasRef = useRef(null);
@@ -356,10 +405,53 @@ function App() {
           <p className="page-kicker">About</p>
           <h1>I build software with a security-minded edge.</h1>
           <p>
-            I am a computer science student at Gonzaga University interested in software
-            security, thoughtful interfaces, and systems that feel clear from the first
-            click. Outside of code, I am usually running, making beats, or digging into
-            how languages and tools shape the way people think.
+            I am a software engineer (Gonzaga CS &apos;26, security concentration). By day I
+            write firmware; the rest of the time I build AI integrations for small teams:
+            agents, MCP servers, and LLM features that run in production. Outside of code,
+            I am usually running, making beats, or digging into how languages and tools
+            shape the way people think.
+          </p>
+        </section>
+      )}
+
+      {activeTab === 'services' && (
+        <section className="page-content services-content">
+          <p className="page-kicker">Services</p>
+          <h1>AI integrations, shipped.</h1>
+          <p>
+            Fixed-price projects for small teams: agents and MCP servers, LLM features inside
+            your product, document and email automations, and firmware when the problem goes
+            down to the device. You own the code and get progress notes every day.
+          </p>
+          <div className="service-grid">
+            {SERVICES.map((service) => (
+              <article key={service.title} className="service-card" style={{ '--project-accent': service.accent }}>
+                <h2>{service.title}</h2>
+                <p className="service-price">
+                  {service.price} <span>{service.timeline}</span>
+                </p>
+                <p>{service.blurb}</p>
+                <ul>
+                  {service.bullets.map((bullet) => (
+                    <li key={bullet}>{bullet}</li>
+                  ))}
+                </ul>
+              </article>
+            ))}
+          </div>
+          <div className="service-cta">
+            <a className="project-detail-link" href="mailto:thefady4@gmail.com?subject=Project%20inquiry">
+              Email me the workflow that eats your week
+            </a>
+            <a className="project-detail-link" href="https://www.linkedin.com/in/fadyyoussef08/" target="_blank" rel="noreferrer">
+              Message on LinkedIn
+            </a>
+          </div>
+          <p className="service-proof">
+            Recent work:{' '}
+            <a href="https://github.com/JustFady/mcp-serial" target="_blank" rel="noreferrer">mcp-serial</a>,{' '}
+            <a href="https://github.com/JustFady/Aegis" target="_blank" rel="noreferrer">Aegis</a>,{' '}
+            <a href="https://github.com/JustFady/kinetic-edge" target="_blank" rel="noreferrer">kinetic-edge</a>.
           </p>
         </section>
       )}
