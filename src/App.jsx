@@ -6,78 +6,6 @@ const PARTICLE_COLORS = ['#28ff7a', '#24b8ff', '#a855ff', '#ff305c'];
 const EMAIL = 'mailto:itsfadyy02@gmail.com?subject=Hello%20from%20your%20site';
 const LINKEDIN = 'https://www.linkedin.com/in/fadyyoussef08/';
 const GITHUB = 'https://github.com/JustFady';
-const CALENDLY = 'https://calendly.com/itsfadyy02/intro'; // e.g. 'https://calendly.com/fadyyoussef/intro' — a booking button appears once set
-
-const SECTIONS = [
-  { id: 'top', label: 'Home' },
-  { id: 'work', label: 'Work' },
-  { id: 'about', label: 'About' },
-  { id: 'contact', label: 'Contact' },
-];
-
-const PROJECTS = [
-  {
-    title: 'mcp-serial',
-    description: 'An MCP server that lets Claude open a serial console, send commands, tail firmware logs with filters, and flash STM32/ESP32 boards behind an explicit confirm and an allow-listed firmware directory.',
-    tags: ['Python', 'MCP', 'Embedded'],
-    link: 'https://github.com/JustFady/mcp-serial',
-    accent: '#28ff7a',
-  },
-  {
-    title: 'Aegis',
-    description: 'A pre-commit guardrail that audits the staged git diff for security issues with an LLM, caches verdicts per file-diff in SQLite, and offers to apply the suggested fix before the commit goes through.',
-    tags: ['TypeScript', 'Security', 'CLI'],
-    link: 'https://github.com/JustFady/Aegis',
-    accent: '#24b8ff',
-  },
-  {
-    title: 'kinetic-edge',
-    description: 'A local video-AI pipeline in C++ and Python that tracks players and the ball with YOLOv8, flags boundary violations and acceleration spikes, and ships as a Docker-packaged desktop tool.',
-    tags: ['C++', 'Python', 'YOLOv8'],
-    link: 'https://github.com/JustFady/kinetic-edge',
-    accent: '#a855ff',
-  },
-  {
-    title: 'OurPL-Lang',
-    description: 'A small programming language built from scratch in Java: hand-written lexer and recursive-descent parser, tree-walking interpreter, functions, closures, block scoping and control flow, with an automated test suite.',
-    tags: ['Java', 'Interpreters', 'Parsing'],
-    link: 'https://github.com/JustFady/OurPL-Lang',
-    accent: '#ffb020',
-  },
-  {
-    title: 'inbox-triage',
-    description: 'Email automation shaped for trust: classify inbound mail, draft replies in your voice, queue them for human approval, log every decision, and measure accuracy on your own messages before turning it on.',
-    tags: ['Python', 'Claude API', 'Human-in-the-loop'],
-    link: 'https://github.com/JustFady/inbox-triage',
-    accent: '#ff305c',
-  },
-  {
-    title: 'mcp-server-template',
-    description: 'A production-shaped starting point for MCP servers: bearer-token auth, per-client rate limits, a host allow-list, structured call logging, tests against the real transport, Docker and CI.',
-    tags: ['Python', 'MCP', 'Starlette'],
-    link: 'https://github.com/JustFady/mcp-server-template',
-    accent: '#24b8ff',
-  },
-];
-
-const FACETS = [
-  {
-    title: 'AI integrations',
-    text: 'Agents with tools, MCP servers, retrieval over real documents, and LLM features that ship with evals and logging instead of demos.',
-    accent: '#24b8ff',
-  },
-  {
-    title: 'Embedded systems',
-    text: 'Firmware on STM32, ESP32 and Apollo3 with FreeRTOS, SPI/I2C drivers, J-Link debugging, and telemetry from the device to the cloud.',
-    accent: '#28ff7a',
-  },
-  {
-    title: 'Security-minded by default',
-    text: 'Gonzaga CS with a software-security concentration; I build tools like Aegis and phishing-awareness training because the threat model is part of the design.',
-    accent: '#a855ff',
-  },
-];
-
 const reducedMotion = () =>
   typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 
@@ -283,114 +211,6 @@ function RotatingRole() {
   );
 }
 
-/* Scroll-linked values: page progress, hero dissolve. One rAF-throttled listener. */
-function useScrollEffects() {
-  useEffect(() => {
-    const root = document.documentElement;
-    const still = reducedMotion();
-    let ticking = false;
-    const update = () => {
-      ticking = false;
-      const max = root.scrollHeight - window.innerHeight;
-      root.style.setProperty('--progress', max > 0 ? (window.scrollY / max).toFixed(4) : '0');
-      const heroP = still ? 0 : Math.min(1, window.scrollY / (window.innerHeight * 0.6));
-      root.style.setProperty('--hero-p', heroP.toFixed(3));
-      root.classList.toggle('is-scrolled', window.scrollY > 24);
-    };
-    const onScroll = () => {
-      if (!ticking) {
-        ticking = true;
-        window.requestAnimationFrame(update);
-      }
-    };
-    update();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll, { passive: true });
-    return () => {
-      window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('resize', onScroll);
-    };
-  }, []);
-}
-
-/* Which section is under the middle of the viewport: drives nav highlight and the ambient glow. */
-function useScrollSpy(ids) {
-  const [active, setActive] = useState(ids[0]);
-
-  useEffect(() => {
-    const elements = ids.map((id) => document.getElementById(id)).filter(Boolean);
-    if (!elements.length || !('IntersectionObserver' in window)) return undefined;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) setActive(entry.target.id);
-        });
-      },
-      { rootMargin: '-45% 0px -50% 0px', threshold: 0 },
-    );
-    elements.forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
-  }, [ids]);
-
-  useEffect(() => {
-    document.documentElement.dataset.section = active;
-  }, [active]);
-
-  return active;
-}
-
-/* Fade-up on entry for anything marked data-reveal. */
-function useReveal() {
-  useEffect(() => {
-    const elements = Array.from(document.querySelectorAll('[data-reveal]'));
-    if (!elements.length) return undefined;
-    if (reducedMotion() || !('IntersectionObserver' in window)) {
-      elements.forEach((el) => el.classList.add('is-visible'));
-      return undefined;
-    }
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('is-visible');
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { rootMargin: '0px 0px -8% 0px', threshold: 0.1 },
-    );
-    elements.forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
-  }, []);
-}
-
-/* Cursor-following light on cards (pointer devices only). */
-function useSpotlight() {
-  useEffect(() => {
-    if (!window.matchMedia?.('(hover: hover) and (pointer: fine)').matches) return undefined;
-    let ticking = false;
-    let last = null;
-    const apply = () => {
-      ticking = false;
-      if (!last) return;
-      const card = last.target.closest('[data-spotlight]');
-      if (!card) return;
-      const rect = card.getBoundingClientRect();
-      card.style.setProperty('--mx', `${last.clientX - rect.left}px`);
-      card.style.setProperty('--my', `${last.clientY - rect.top}px`);
-    };
-    const onMove = (event) => {
-      last = event;
-      if (!ticking) {
-        ticking = true;
-        window.requestAnimationFrame(apply);
-      }
-    };
-    document.addEventListener('pointermove', onMove, { passive: true });
-    return () => document.removeEventListener('pointermove', onMove);
-  }, []);
-}
-
 function GitHubIcon() {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -416,43 +236,20 @@ function MailIcon() {
 }
 
 function App() {
-  const sectionIds = useRef(SECTIONS.map((s) => s.id)).current;
-  const active = useScrollSpy(sectionIds);
-  useScrollEffects();
-  useReveal();
-  useSpotlight();
-
   return (
     <>
       <ParticleBackground />
       <div className="aurora" aria-hidden="true" />
-      <div className="progress" aria-hidden="true" />
 
       <header className="site-header">
-        <a className="brand" href="#top" aria-label="Back to top">
+        <span className="brand" aria-label="Fady Youssef">
           FY
-        </a>
-        <nav className="site-links" aria-label="Sections">
-          {SECTIONS.map((s) => (
-            <a
-              key={s.id}
-              href={`#${s.id}`}
-              className={s.id === 'contact' ? 'site-links-cta' : undefined}
-              aria-current={active === s.id ? 'location' : undefined}
-            >
-              {s.label}
-            </a>
-          ))}
-        </nav>
+        </span>
       </header>
 
       <main>
         <section id="top" className="hero">
           <div className="hero-inner">
-            <p className="hero-status">
-              <span className="hero-dot" />
-              Open to select projects · Austin, TX
-            </p>
             <h1 className="hero-name">Fady Youssef</h1>
             <RotatingRole />
             <p className="hero-lead">
@@ -460,11 +257,11 @@ function App() {
               talks to real hardware, and tools that make both easier to trust.
             </p>
             <div className="hero-actions">
-              <a className="btn btn-primary" href="#work">
-                See my work
-              </a>
-              <a className="btn" href={GITHUB} target="_blank" rel="noreferrer">
+              <a className="btn btn-primary" href={GITHUB} target="_blank" rel="noreferrer">
                 GitHub
+              </a>
+              <a className="btn" href={EMAIL}>
+                Get in touch
               </a>
             </div>
             <div className="hero-social">
@@ -479,126 +276,8 @@ function App() {
               </a>
             </div>
           </div>
-          <a className="scroll-cue" href="#work" aria-label="Scroll to work">
-            <span />
-          </a>
-        </section>
-
-        <section id="work" className="section">
-          <div className="section-head" data-reveal>
-            <p className="kicker">Selected work</p>
-            <h2>Things I have built.</h2>
-            <p className="lead">
-              A mix of tools I use, systems I wanted to understand, and problems that were more fun to solve than to
-              read about. Everything here is open source.
-            </p>
-          </div>
-          <div className="work-grid">
-            {PROJECTS.map((project, index) => (
-              <a
-                key={project.title}
-                className="card work-card"
-                href={project.link}
-                target="_blank"
-                rel="noreferrer"
-                style={{ '--accent': project.accent, '--delay': `${(index % 2) * 80}ms` }}
-                data-reveal
-                data-spotlight
-              >
-                <div className="work-top">
-                  <h3>{project.title}</h3>
-                  <span className="work-arrow" aria-hidden="true">
-                    ↗
-                  </span>
-                </div>
-                <p>{project.description}</p>
-                <ul className="work-tags" aria-label={`${project.title} technologies`}>
-                  {project.tags.map((tag) => (
-                    <li key={tag}>{tag}</li>
-                  ))}
-                </ul>
-              </a>
-            ))}
-          </div>
-          <p className="work-more" data-reveal>
-            More on{' '}
-            <a href={GITHUB} target="_blank" rel="noreferrer">
-              github.com/JustFady
-            </a>
-            .
-          </p>
-        </section>
-
-        <section id="about" className="section">
-          <div className="section-head" data-reveal>
-            <p className="kicker">About</p>
-            <h2>Three things I keep coming back to.</h2>
-            <p className="lead">
-              Gonzaga University, B.S. Computer Science (2026) with a software-security concentration. Firmware
-              engineer by day. The rest of the time I am wiring language models into real systems, running, or
-              making beats.
-            </p>
-          </div>
-          <div className="facets">
-            {FACETS.map((facet, index) => (
-              <article
-                key={facet.title}
-                className="facet"
-                style={{ '--accent': facet.accent, '--delay': `${index * 90}ms` }}
-                data-reveal
-                data-spotlight
-              >
-                <h3>{facet.title}</h3>
-                <p>{facet.text}</p>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section id="contact" className="section contact">
-          <div className="contact-card" data-reveal data-spotlight>
-            <p className="kicker">Contact</p>
-            <h2>Say hello.</h2>
-            <p className="lead">
-              {CALENDLY
-                ? 'Open to select AI-integration and embedded projects. Book a 20-minute call or send an email; I reply within a day.'
-                : 'Open to select AI-integration and embedded projects. Send an email or a message on LinkedIn; I reply within a day.'}
-            </p>
-            <div className="hero-actions">
-              {CALENDLY && (
-                <a className="btn btn-primary" href={CALENDLY} target="_blank" rel="noreferrer">
-                  Book a 20-minute call
-                </a>
-              )}
-              <a className={`btn ${CALENDLY ? '' : 'btn-primary'}`} href={EMAIL}>
-                itsfadyy02@gmail.com
-              </a>
-              <a className="btn" href={LINKEDIN} target="_blank" rel="noreferrer">
-                LinkedIn
-              </a>
-            </div>
-            <p className="contact-meta">Austin, TX · remote-friendly</p>
-          </div>
         </section>
       </main>
-
-      <footer className="site-footer">
-        <span>© {new Date().getFullYear()} Fady Youssef</span>
-        <nav aria-label="Footer">
-          <a href={GITHUB} target="_blank" rel="noreferrer">
-            GitHub
-          </a>
-          <a href={LINKEDIN} target="_blank" rel="noreferrer">
-            LinkedIn
-          </a>
-          <a href="https://github.com/JustFady/FY-Portfolio" target="_blank" rel="noreferrer">
-            Source
-          </a>
-          <a className="to-top" href="#top">
-            Back to top ↑
-          </a>
-        </nav>
-      </footer>
     </>
   );
 }

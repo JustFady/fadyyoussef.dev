@@ -824,3 +824,16 @@ main,
     display: none;
   }
 }
+
+/* Single-screen page: hero only, no scrolling. */
+html,
+body {
+  overflow: hidden;
+  height: 100%;
+}
+
+.hero {
+  height: 100svh;
+  min-height: 0;
+  padding-block: 72px 48px;
+}
