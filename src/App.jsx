@@ -6,7 +6,7 @@ const PARTICLE_COLORS = ['#28ff7a', '#24b8ff', '#a855ff', '#ff305c'];
 const EMAIL = 'mailto:itsfadyy02@gmail.com?subject=Hello%20from%20your%20site';
 const LINKEDIN = 'https://www.linkedin.com/in/fadyyoussef08/';
 const GITHUB = 'https://github.com/JustFady';
-const CALENDLY = ''; // e.g. 'https://calendly.com/fadyyoussef/intro' — a booking button appears once set
+const CALENDLY = 'https://calendly.com/itsfadyy02/intro'; // e.g. 'https://calendly.com/fadyyoussef/intro' — a booking button appears once set
 
 const SECTIONS = [
   { id: 'top', label: 'Home' },
