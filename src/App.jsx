@@ -7,6 +7,13 @@ const EMAIL = 'mailto:thefady4@gmail.com?subject=Project%20inquiry';
 const LINKEDIN = 'https://www.linkedin.com/in/fadyyoussef08/';
 const GITHUB = 'https://github.com/JustFady';
 
+const SECTIONS = [
+  { id: 'top', label: 'Home' },
+  { id: 'services', label: 'Services' },
+  { id: 'process', label: 'Process' },
+  { id: 'contact', label: 'Contact' },
+];
+
 const SERVICES = [
   {
     title: 'AI Automation Sprint',
@@ -49,6 +56,7 @@ const PROOF = [
 const reducedMotion = () =>
   typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 
+/* Background: drifting particles that also shift gently with scroll. */
 function ParticleBackground() {
   const canvasRef = useRef(null);
 
@@ -78,6 +86,7 @@ function ParticleBackground() {
           vx: Math.cos(angle) * speed,
           vy: Math.sin(angle) * speed,
           radius: 2.4 + (index % 5) * 0.5,
+          depth: 0.4 + (index % 4) * 0.2,
           color: PARTICLE_COLORS[index % PARTICLE_COLORS.length],
         };
       });
@@ -112,14 +121,16 @@ function ParticleBackground() {
 
     const draw = (loop = true) => {
       ctx.clearRect(0, 0, width, height);
+      const scroll = still ? 0 : window.scrollY * 0.12;
+      const pos = particles.map((p) => ({ x: p.x, y: (((p.y - scroll * p.depth) % height) + height) % height }));
 
       if (!still) {
-        particles.forEach((p) => {
+        particles.forEach((p, i) => {
           p.vx += (p.baseVx - p.vx) * 0.02;
           p.vy += (p.baseVy - p.vy) * 0.02;
           if (pointer.active) {
-            const dx = p.x - pointer.x;
-            const dy = p.y - pointer.y;
+            const dx = pos[i].x - pointer.x;
+            const dy = pos[i].y - pointer.y;
             const distance = Math.hypot(dx, dy);
             if (distance > 0 && distance < 150) {
               const force = (1 - distance / 150) * 0.075;
@@ -137,31 +148,29 @@ function ParticleBackground() {
         });
       }
 
-      for (let i = 0; i < particles.length; i += 1) {
-        for (let j = i + 1; j < particles.length; j += 1) {
-          const a = particles[i];
-          const b = particles[j];
-          const distance = Math.hypot(a.x - b.x, a.y - b.y);
+      for (let i = 0; i < pos.length; i += 1) {
+        for (let j = i + 1; j < pos.length; j += 1) {
+          const distance = Math.hypot(pos[i].x - pos[j].x, pos[i].y - pos[j].y);
           if (distance < 118) {
             ctx.strokeStyle = `rgba(130, 170, 255, ${0.22 * (1 - distance / 118)})`;
             ctx.lineWidth = 1;
             ctx.beginPath();
-            ctx.moveTo(a.x, a.y);
-            ctx.lineTo(b.x, b.y);
+            ctx.moveTo(pos[i].x, pos[i].y);
+            ctx.lineTo(pos[j].x, pos[j].y);
             ctx.stroke();
           }
         }
       }
 
       if (pointer.active) {
-        particles.forEach((p) => {
-          const distance = Math.hypot(p.x - pointer.x, p.y - pointer.y);
+        pos.forEach((q, i) => {
+          const distance = Math.hypot(q.x - pointer.x, q.y - pointer.y);
           if (distance < 170) {
-            ctx.strokeStyle = `${p.color}${Math.round(110 * (1 - distance / 170)).toString(16).padStart(2, '0')}`;
+            ctx.strokeStyle = `${particles[i].color}${Math.round(110 * (1 - distance / 170)).toString(16).padStart(2, '0')}`;
             ctx.lineWidth = 1.25;
             ctx.beginPath();
             ctx.moveTo(pointer.x, pointer.y);
-            ctx.lineTo(p.x, p.y);
+            ctx.lineTo(q.x, q.y);
             ctx.stroke();
           }
         });
@@ -175,10 +184,10 @@ function ParticleBackground() {
         ctx.fill();
       }
 
-      particles.forEach((p) => {
-        ctx.fillStyle = p.color;
+      pos.forEach((q, i) => {
+        ctx.fillStyle = particles[i].color;
         ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.arc(q.x, q.y, particles[i].radius, 0, Math.PI * 2);
         ctx.fill();
       });
 
@@ -249,6 +258,63 @@ function RotatingRole() {
   );
 }
 
+/* Scroll-linked values: page progress, hero dissolve. One rAF-throttled listener. */
+function useScrollEffects() {
+  useEffect(() => {
+    const root = document.documentElement;
+    const still = reducedMotion();
+    let ticking = false;
+    const update = () => {
+      ticking = false;
+      const max = root.scrollHeight - window.innerHeight;
+      root.style.setProperty('--progress', max > 0 ? (window.scrollY / max).toFixed(4) : '0');
+      const heroP = still ? 0 : Math.min(1, window.scrollY / (window.innerHeight * 0.6));
+      root.style.setProperty('--hero-p', heroP.toFixed(3));
+      root.classList.toggle('is-scrolled', window.scrollY > 24);
+    };
+    const onScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        window.requestAnimationFrame(update);
+      }
+    };
+    update();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+    };
+  }, []);
+}
+
+/* Which section is under the middle of the viewport: drives nav highlight and the ambient glow. */
+function useScrollSpy(ids) {
+  const [active, setActive] = useState(ids[0]);
+
+  useEffect(() => {
+    const elements = ids.map((id) => document.getElementById(id)).filter(Boolean);
+    if (!elements.length || !('IntersectionObserver' in window)) return undefined;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setActive(entry.target.id);
+        });
+      },
+      { rootMargin: '-45% 0px -50% 0px', threshold: 0 },
+    );
+    elements.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, [ids]);
+
+  useEffect(() => {
+    document.documentElement.dataset.section = active;
+  }, [active]);
+
+  return active;
+}
+
+/* Fade-up on entry for anything marked data-reveal. */
 function useReveal() {
   useEffect(() => {
     const elements = Array.from(document.querySelectorAll('[data-reveal]'));
@@ -270,6 +336,33 @@ function useReveal() {
     );
     elements.forEach((el) => observer.observe(el));
     return () => observer.disconnect();
+  }, []);
+}
+
+/* Cursor-following light on cards (pointer devices only). */
+function useSpotlight() {
+  useEffect(() => {
+    if (!window.matchMedia?.('(hover: hover) and (pointer: fine)').matches) return undefined;
+    let ticking = false;
+    let last = null;
+    const apply = () => {
+      ticking = false;
+      if (!last) return;
+      const card = last.target.closest('[data-spotlight]');
+      if (!card) return;
+      const rect = card.getBoundingClientRect();
+      card.style.setProperty('--mx', `${last.clientX - rect.left}px`);
+      card.style.setProperty('--my', `${last.clientY - rect.top}px`);
+    };
+    const onMove = (event) => {
+      last = event;
+      if (!ticking) {
+        ticking = true;
+        window.requestAnimationFrame(apply);
+      }
+    };
+    document.addEventListener('pointermove', onMove, { passive: true });
+    return () => document.removeEventListener('pointermove', onMove);
   }, []);
 }
 
@@ -298,28 +391,43 @@ function MailIcon() {
 }
 
 function App() {
+  const sectionIds = useRef(SECTIONS.map((s) => s.id)).current;
+  const active = useScrollSpy(sectionIds);
+  useScrollEffects();
   useReveal();
+  useSpotlight();
 
   return (
     <>
       <ParticleBackground />
+      <div className="aurora" aria-hidden="true" />
+      <div className="progress" aria-hidden="true" />
 
       <header className="site-header">
         <a className="brand" href="#top" aria-label="Back to top">
           FY
         </a>
         <nav className="site-links" aria-label="Sections">
-          <a href="#services">Services</a>
-          <a href="#process">Process</a>
-          <a className="site-links-cta" href="#contact">
-            Contact
-          </a>
+          {SECTIONS.map((s) => (
+            <a
+              key={s.id}
+              href={`#${s.id}`}
+              className={s.id === 'contact' ? 'site-links-cta' : undefined}
+              aria-current={active === s.id ? 'location' : undefined}
+            >
+              {s.label}
+            </a>
+          ))}
         </nav>
       </header>
 
       <main>
         <section id="top" className="hero">
           <div className="hero-inner">
+            <p className="hero-status">
+              <span className="hero-dot" />
+              Available for projects · Austin, TX · remote
+            </p>
             <h1 className="hero-name">Fady Youssef</h1>
             <RotatingRole />
             <p className="hero-lead">
@@ -367,6 +475,7 @@ function App() {
                 className="card service-card"
                 style={{ '--accent': service.accent, '--delay': `${index * 90}ms` }}
                 data-reveal
+                data-spotlight
               >
                 <h3>{service.title}</h3>
                 <p className="service-price">
@@ -401,7 +510,7 @@ function App() {
           </div>
           <ol className="steps">
             {STEPS.map((step, index) => (
-              <li key={step.n} className="step" style={{ '--delay': `${index * 90}ms` }} data-reveal>
+              <li key={step.n} className="step" style={{ '--delay': `${index * 90}ms` }} data-reveal data-spotlight>
                 <span className="step-n">{step.n}</span>
                 <h3>{step.title}</h3>
                 <p>{step.text}</p>
@@ -411,7 +520,7 @@ function App() {
         </section>
 
         <section id="contact" className="section contact">
-          <div className="contact-card" data-reveal>
+          <div className="contact-card" data-reveal data-spotlight>
             <p className="kicker">Contact</p>
             <h2>Tell me about the workflow that eats your week.</h2>
             <p className="lead">One email is enough. I reply within a day with two call slots or a one-page scope.</p>
@@ -423,7 +532,7 @@ function App() {
                 Message on LinkedIn
               </a>
             </div>
-            <p className="contact-meta">Austin, TX · remote-friendly · Gonzaga CS ’26</p>
+            <p className="contact-meta">Gonzaga CS ’26 · Austin, TX · remote-friendly</p>
           </div>
         </section>
       </main>
@@ -442,6 +551,9 @@ function App() {
           </a>
           <a href="https://github.com/JustFady/FY-Portfolio" target="_blank" rel="noreferrer">
             Source
+          </a>
+          <a className="to-top" href="#top">
+            Back to top ↑
           </a>
         </nav>
       </footer>
