@@ -241,12 +241,6 @@ function App() {
       <ParticleBackground />
       <div className="aurora" aria-hidden="true" />
 
-      <header className="site-header">
-        <span className="brand" aria-label="Fady Youssef">
-          FY
-        </span>
-      </header>
-
       <main>
         <section id="top" className="hero">
           <div className="hero-inner">
