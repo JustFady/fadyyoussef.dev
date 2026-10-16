@@ -19,10 +19,10 @@ function particles() {
 
   const createParticles = () => {
     const mobile = width < 720;
-    const count = Math.min(mobile ? 34 : 72, Math.max(24, Math.floor((width * height) / (mobile ? 36000 : 26000))));
+    const count = mobile ? 12 : 20;
     particles = Array.from({ length: count }, (_, index) => {
       const angle = ((index * 137.5) % 360) * (Math.PI / 180);
-      const speed = 0.16 + (index % 7) * 0.02;
+      const speed = 0.06 + (index % 7) * 0.012;
       return {
         x: (index * 97) % Math.max(width, 1),
         y: (index * 151) % Math.max(height, 1),
@@ -30,7 +30,7 @@ function particles() {
         baseVy: Math.sin(angle) * speed,
         vx: Math.cos(angle) * speed,
         vy: Math.sin(angle) * speed,
-        radius: 2.4 + (index % 5) * 0.5,
+        radius: 1.6 + (index % 5) * 0.35,
         depth: 0.4 + (index % 4) * 0.2,
         color: PARTICLE_COLORS[index % PARTICLE_COLORS.length],
       };
@@ -96,8 +96,8 @@ function particles() {
     for (let i = 0; i < pos.length; i += 1) {
       for (let j = i + 1; j < pos.length; j += 1) {
         const distance = Math.hypot(pos[i].x - pos[j].x, pos[i].y - pos[j].y);
-        if (distance < 118) {
-          ctx.strokeStyle = `rgba(130, 170, 255, ${0.22 * (1 - distance / 118)})`;
+        if (distance < 160) {
+          ctx.strokeStyle = `rgba(130, 170, 255, ${0.1 * (1 - distance / 160)})`;
           ctx.lineWidth = 1;
           ctx.beginPath();
           ctx.moveTo(pos[i].x, pos[i].y);
@@ -107,34 +107,16 @@ function particles() {
       }
     }
 
-    if (pointer.active) {
-      pos.forEach((q, i) => {
-        const distance = Math.hypot(q.x - pointer.x, q.y - pointer.y);
-        if (distance < 170) {
-          ctx.strokeStyle = `${particles[i].color}${Math.round(110 * (1 - distance / 170)).toString(16).padStart(2, '0')}`;
-          ctx.lineWidth = 1.25;
-          ctx.beginPath();
-          ctx.moveTo(pointer.x, pointer.y);
-          ctx.lineTo(q.x, q.y);
-          ctx.stroke();
-        }
-      });
-      const glow = ctx.createRadialGradient(pointer.x, pointer.y, 0, pointer.x, pointer.y, 95);
-      glow.addColorStop(0, 'rgba(168, 85, 255, 0.18)');
-      glow.addColorStop(0.45, 'rgba(36, 184, 255, 0.08)');
-      glow.addColorStop(1, 'rgba(40, 255, 122, 0)');
-      ctx.fillStyle = glow;
-      ctx.beginPath();
-      ctx.arc(pointer.x, pointer.y, 95, 0, Math.PI * 2);
-      ctx.fill();
-    }
 
     pos.forEach((q, i) => {
+      ctx.globalAlpha = 0.55;
       ctx.fillStyle = particles[i].color;
       ctx.beginPath();
       ctx.arc(q.x, q.y, particles[i].radius, 0, Math.PI * 2);
       ctx.fill();
     });
+
+    ctx.globalAlpha = 1;
 
     if (loop && !still && !paused) frame = window.requestAnimationFrame(() => draw(true));
   };
