@@ -3,7 +3,7 @@ import './App.css';
 
 const ROLES = ['Software Engineer', 'AI Integrations & MCP', 'Embedded Firmware', 'Security-Minded Builder'];
 const PARTICLE_COLORS = ['#28ff7a', '#24b8ff', '#a855ff', '#ff305c'];
-const EMAIL = 'mailto:thefady4@gmail.com?subject=Hello%20from%20your%20site';
+const EMAIL = 'mailto:itsfadyy02@gmail.com?subject=Hello%20from%20your%20site';
 const LINKEDIN = 'https://www.linkedin.com/in/fadyyoussef08/';
 const GITHUB = 'https://github.com/JustFady';
 const CALENDLY = ''; // e.g. 'https://calendly.com/fadyyoussef/intro' — a booking button appears once set
@@ -571,7 +571,7 @@ function App() {
                 </a>
               )}
               <a className={`btn ${CALENDLY ? '' : 'btn-primary'}`} href={EMAIL}>
-                thefady4@gmail.com
+                itsfadyy02@gmail.com
               </a>
               <a className="btn" href={LINKEDIN} target="_blank" rel="noreferrer">
                 LinkedIn
