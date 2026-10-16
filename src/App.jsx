@@ -52,10 +52,10 @@ const PROJECTS = [
     accent: '#ff305c',
   },
   {
-    title: 'CrimsonCode 2026',
-    description: 'A Kotlin Multiplatform emergency-response app with an OTP flow, contacts, map and list event browsing, and Supabase-backed event creation, built at a 24-hour hackathon.',
-    tags: ['Kotlin', 'Compose', 'Supabase'],
-    link: 'https://github.com/JustFady/CrimsonCode2026',
+    title: 'mcp-server-template',
+    description: 'A production-shaped starting point for MCP servers: bearer-token auth, per-client rate limits, a host allow-list, structured call logging, tests against the real transport, Docker and CI.',
+    tags: ['Python', 'MCP', 'Starlette'],
+    link: 'https://github.com/JustFady/mcp-server-template',
     accent: '#24b8ff',
   },
 ];
