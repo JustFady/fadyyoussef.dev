@@ -252,18 +252,6 @@ function App() {
           <div className="hero-inner">
             <h1 className="hero-name">Fady Youssef</h1>
             <RotatingRole />
-            <p className="hero-lead">
-              I build software with a security-minded edge: AI integrations that run in production, firmware that
-              talks to real hardware, and tools that make both easier to trust.
-            </p>
-            <div className="hero-actions">
-              <a className="btn btn-primary" href={GITHUB} target="_blank" rel="noreferrer">
-                GitHub
-              </a>
-              <a className="btn" href={EMAIL}>
-                Get in touch
-              </a>
-            </div>
             <div className="hero-social">
               <a href={GITHUB} target="_blank" rel="noreferrer" aria-label="GitHub">
                 <GitHubIcon />
