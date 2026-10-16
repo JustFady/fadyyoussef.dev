@@ -6,6 +6,7 @@ const PARTICLE_COLORS = ['#28ff7a', '#24b8ff', '#a855ff', '#ff305c'];
 const EMAIL = 'mailto:thefady4@gmail.com?subject=Project%20inquiry';
 const LINKEDIN = 'https://www.linkedin.com/in/fadyyoussef08/';
 const GITHUB = 'https://github.com/JustFady';
+const CALENDLY = ''; // e.g. 'https://calendly.com/fadyyoussef/intro' — booking buttons appear once set
 
 const SECTIONS = [
   { id: 'top', label: 'Home' },
@@ -437,9 +438,15 @@ function App() {
               <a className="btn btn-primary" href="#services">
                 See what I build
               </a>
-              <a className="btn" href={EMAIL}>
-                Email me
-              </a>
+              {CALENDLY ? (
+                <a className="btn" href={CALENDLY} target="_blank" rel="noreferrer">
+                  Book a 20-minute call
+                </a>
+              ) : (
+                <a className="btn" href={EMAIL}>
+                  Email me
+                </a>
+              )}
             </div>
             <div className="hero-social">
               <a href={GITHUB} target="_blank" rel="noreferrer" aria-label="GitHub">
@@ -523,9 +530,18 @@ function App() {
           <div className="contact-card" data-reveal data-spotlight>
             <p className="kicker">Contact</p>
             <h2>Tell me about the workflow that eats your week.</h2>
-            <p className="lead">One email is enough. I reply within a day with two call slots or a one-page scope.</p>
+            <p className="lead">
+              {CALENDLY
+                ? 'Grab a 20-minute slot, or send one email. Either way you get two call options or a one-page scope within a day.'
+                : 'One email is enough. I reply within a day with two call slots or a one-page scope.'}
+            </p>
             <div className="hero-actions">
-              <a className="btn btn-primary" href={EMAIL}>
+              {CALENDLY && (
+                <a className="btn btn-primary" href={CALENDLY} target="_blank" rel="noreferrer">
+                  Book a 20-minute call
+                </a>
+              )}
+              <a className={`btn ${CALENDLY ? '' : 'btn-primary'}`} href={EMAIL}>
                 thefady4@gmail.com
               </a>
               <a className="btn" href={LINKEDIN} target="_blank" rel="noreferrer">
@@ -545,9 +561,6 @@ function App() {
           </a>
           <a href={LINKEDIN} target="_blank" rel="noreferrer">
             LinkedIn
-          </a>
-          <a href="/resume.pdf" target="_blank" rel="noreferrer">
-            Résumé
           </a>
           <a href="https://github.com/JustFady/FY-Portfolio" target="_blank" rel="noreferrer">
             Source
