@@ -1,6 +1,7 @@
 import './style.css';
 
-const PARTICLE_COLORS = ['#28ff7a', '#24b8ff', '#a855ff', '#ff305c'];
+// The two corner glows in style.css: teal top-left, violet bottom-right.
+const PALETTE = ['36, 184, 255', '168, 85, 255'];
 const reducedMotion = () => window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 
 /* Background: particle network that reacts to the cursor (restored from 216ec7f). */
@@ -21,6 +22,9 @@ function particles() {
     particles = Array.from({ length: count }, (_, index) => {
       const angle = ((index * 137.5) % 360) * (Math.PI / 180);
       const speed = 0.18 + (index % 7) * 0.02;
+      // Smaller dots are dimmer, so the field reads as having depth.
+      const depth = (index * 0.618034) % 1;
+      const rgb = PALETTE[index % PALETTE.length];
       // R2 low-discrepancy sequence: even spread without the diagonal stripes a modulo grid makes on narrow screens.
       return {
         x: ((0.5 + (index + 1) * 0.7548776662) % 1) * width,
@@ -29,8 +33,9 @@ function particles() {
         baseVy: Math.sin(angle) * speed,
         vx: Math.cos(angle) * speed,
         vy: Math.sin(angle) * speed,
-        radius: 2.8 + (index % 5) * 0.55,
-        color: PARTICLE_COLORS[index % PARTICLE_COLORS.length],
+        radius: 2.4 + depth * 2.4,
+        rgb,
+        fill: `rgba(${rgb}, ${(0.45 + depth * 0.5).toFixed(2)})`,
       };
     });
   };
@@ -109,10 +114,7 @@ function particles() {
       particles.forEach((p) => {
         const distance = Math.hypot(p.x - pointer.x, p.y - pointer.y);
         if (distance < 170) {
-          const alpha = Math.round(120 * (1 - distance / 170))
-            .toString(16)
-            .padStart(2, '0');
-          ctx.strokeStyle = `${p.color}${alpha}`;
+          ctx.strokeStyle = `rgba(${p.rgb}, ${0.47 * (1 - distance / 170)})`;
           ctx.lineWidth = 1.25;
           ctx.beginPath();
           ctx.moveTo(pointer.x, pointer.y);
@@ -124,7 +126,7 @@ function particles() {
       const glow = ctx.createRadialGradient(pointer.x, pointer.y, 0, pointer.x, pointer.y, 95);
       glow.addColorStop(0, 'rgba(168, 85, 255, 0.18)');
       glow.addColorStop(0.45, 'rgba(36, 184, 255, 0.08)');
-      glow.addColorStop(1, 'rgba(40, 255, 122, 0)');
+      glow.addColorStop(1, 'rgba(168, 85, 255, 0)');
       ctx.fillStyle = glow;
       ctx.beginPath();
       ctx.arc(pointer.x, pointer.y, 95, 0, Math.PI * 2);
@@ -132,7 +134,7 @@ function particles() {
     }
 
     particles.forEach((p) => {
-      ctx.fillStyle = p.color;
+      ctx.fillStyle = p.fill;
       ctx.beginPath();
       ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
       ctx.fill();
