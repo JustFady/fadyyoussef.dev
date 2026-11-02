@@ -149,18 +149,17 @@ main {
   color: var(--text-muted);
   font-size: clamp(1.15rem, 2.6vw, 1.7rem);
   font-weight: 400;
-  transition: opacity 0.42s ease, transform 0.42s ease;
   animation: rise 0.9s var(--ease) 0.14s both;
 }
 
-.hero-role.is-out {
-  opacity: 0;
-  transform: translateY(-8px);
+.hero-role-text {
+  display: inline-block;
+  transition: opacity 0.42s ease, transform 0.42s ease;
 }
 
-.hero-role.is-in {
-  opacity: 1;
-  transform: translateY(0);
+.hero-role-text.is-out {
+  opacity: 0;
+  transform: translateY(-8px);
 }
 
 .hero-social {

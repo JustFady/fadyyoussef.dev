@@ -334,6 +334,29 @@ function projects() {
   select(0);
 }
 
+/* Role line under the name rotates every 4 s (restored from 216ec7f); stays fixed with reduced motion. */
+const TITLES = [
+  'Software Engineer · Austin, TX',
+  'Embedded & backend software',
+  'Software Engineer at Tyr Laboratories',
+  'Gonzaga CS, Software Security',
+];
+
+function rotatingTitle() {
+  const role = document.querySelector('.hero-role-text');
+  if (!role || reducedMotion()) return;
+  let index = 0;
+  window.setInterval(() => {
+    if (document.hidden) return;
+    role.classList.add('is-out');
+    window.setTimeout(() => {
+      index = (index + 1) % TITLES.length;
+      role.textContent = TITLES[index];
+      role.classList.remove('is-out');
+    }, 420);
+  }, 4000);
+}
+
 /* Email icon copies the address (works for webmail users); falls back to mailto. */
 function copyEmail() {
   const link = document.querySelector('.email-link');
@@ -356,6 +379,7 @@ function copyEmail() {
 }
 
 particles();
+rotatingTitle();
 tabs();
 projects();
 copyEmail();
