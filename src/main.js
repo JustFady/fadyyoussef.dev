@@ -191,7 +191,7 @@ const PROJECTS = [
     title: 'OurPL-Lang',
     description:
       'Java interpreter for a small language (course project): hand-written lexer, recursive descent parser, and tree-walk evaluator with closures and lexical scoping; JUnit tests for the lexer and parser.',
-    tags: ['Java', 'Interpreters', 'Maven'],
+    tags: ['Java', 'Interpreters', 'JUnit'],
     link: 'https://github.com/JustFady/OurPL-Lang',
     accent: '#a855ff',
   },
