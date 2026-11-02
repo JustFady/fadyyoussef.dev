@@ -17,13 +17,14 @@ function particles() {
   const pointer = { x: 0, y: 0, active: false };
 
   const createParticles = () => {
-    const count = Math.min(82, Math.max(46, Math.floor((width * height) / 24000)));
+    const count = Math.min(82, Math.max(24, Math.floor((width * height) / 24000)));
     particles = Array.from({ length: count }, (_, index) => {
       const angle = ((index * 137.5) % 360) * (Math.PI / 180);
       const speed = 0.18 + (index % 7) * 0.02;
+      // R2 low-discrepancy sequence: even spread without the diagonal stripes a modulo grid makes on narrow screens.
       return {
-        x: (index * 97) % Math.max(width, 1),
-        y: (index * 151) % Math.max(height, 1),
+        x: ((0.5 + (index + 1) * 0.7548776662) % 1) * width,
+        y: ((0.5 + (index + 1) * 0.5698402909) % 1) * height,
         baseVx: Math.cos(angle) * speed,
         baseVy: Math.sin(angle) * speed,
         vx: Math.cos(angle) * speed,
