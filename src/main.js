@@ -230,27 +230,39 @@ function particles() {
   }
 }
 
-/* Role line under the name rotates every 4 s (restored from 216ec7f); stays fixed with reduced motion. */
-const TITLES = [
-  'Software Engineer · Austin, TX',
-  'Embedded & backend software',
-  'Software Engineer at Tyr Laboratories',
-  'Gonzaga CS, Software Security',
-];
+/* Role line under the name is typed, held, then deleted; stays static with reduced motion. */
+const ROLES = ['Software Engineer', 'Embedded Systems', 'Backend', 'Security'];
 
-function rotatingTitle() {
-  const role = document.querySelector('.hero-role-text');
-  if (!role || reducedMotion()) return;
+function typedRole() {
+  const box = document.querySelector('.hero-role');
+  const text = box?.querySelector('.hero-role-text');
+  if (!text || reducedMotion()) return;
   let index = 0;
-  window.setInterval(() => {
-    if (document.hidden) return;
-    role.classList.add('is-out');
-    window.setTimeout(() => {
-      index = (index + 1) % TITLES.length;
-      role.textContent = TITLES[index];
-      role.classList.remove('is-out');
-    }, 420);
-  }, 4000);
+  let shown = 0;
+  let deleting = false;
+  const later = (ms, busy) => {
+    box.classList.toggle('is-busy', busy);
+    window.setTimeout(step, ms);
+  };
+  function step() {
+    if (document.hidden) return later(500, false);
+    const role = ROLES[index];
+    shown += deleting ? -1 : 1;
+    text.textContent = role.slice(0, shown);
+    if (!deleting && shown === role.length) {
+      deleting = true;
+      return later(2200, false);
+    }
+    if (deleting && shown === 0) {
+      deleting = false;
+      index = (index + 1) % ROLES.length;
+      return later(450, false);
+    }
+    return later(deleting ? 38 : 65 + Math.random() * 55, true);
+  }
+  box.classList.add('is-typed');
+  text.textContent = '';
+  later(700, false);
 }
 
 /* Email icon copies the address (works for webmail users); falls back to mailto. */
@@ -275,5 +287,5 @@ function copyEmail() {
 }
 
 particles();
-rotatingTitle();
+typedRole();
 copyEmail();

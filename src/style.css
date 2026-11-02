@@ -121,7 +121,7 @@ a {
   animation: rise 0.9s var(--ease) 0.06s both;
 }
 
-/* Fixed-height box so the rotating titles never shift the icons below. */
+/* Fixed-height box so the typed roles never shift the icons below. */
 .hero-role {
   --role-lines: 1;
   display: flex;
@@ -138,12 +138,46 @@ a {
 
 .hero-role-text {
   display: inline-block;
-  transition: opacity 0.42s ease, transform 0.42s ease;
 }
 
-.hero-role-text.is-out {
-  opacity: 0;
-  transform: translateY(-8px);
+/* Keep the trailing space mid-word so the caret doesn't jump. */
+.hero-role.is-typed .hero-role-text {
+  white-space: pre;
+}
+
+/* Thin caret: steady while typing or deleting, blinking while a role is shown. */
+.hero-role.is-typed .hero-role-text::after {
+  content: '';
+  display: inline-block;
+  width: 2px;
+  height: 1.05em;
+  margin-left: 3px;
+  vertical-align: -0.16em;
+  border-radius: 1px;
+  background: currentColor;
+  animation: caret 1.05s steps(1) infinite;
+}
+
+.hero-role.is-busy .hero-role-text::after {
+  animation: none;
+}
+
+@keyframes caret {
+  50% {
+    opacity: 0;
+  }
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 .hero-social {
@@ -295,15 +329,20 @@ a {
   }
 }
 
-/* Narrow phones: the longer titles can wrap, so reserve two lines. */
 @media (max-width: 520px) {
   .hero-role {
-    --role-lines: 2;
     margin-top: 12px;
   }
 
   .hero-social {
     margin-top: 26px;
+  }
+}
+
+/* The static line (reduced motion, no JS) can wrap on the narrowest phones. */
+@media (max-width: 360px) {
+  .hero-role {
+    --role-lines: 2;
   }
 }
 
