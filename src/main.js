@@ -339,6 +339,15 @@ function projects() {
   }
 
   select(0);
+
+  // Fade the bottom edge only while rows are scrolled out of view (desktop scroll area).
+  const area = document.querySelector('.project-focus');
+  const updateFade = () => {
+    area.classList.toggle('has-more', area.scrollHeight - area.scrollTop - area.clientHeight > 2);
+  };
+  area.addEventListener('scroll', updateFade, { passive: true });
+  if ('ResizeObserver' in window) new ResizeObserver(updateFade).observe(area);
+  else window.addEventListener('resize', updateFade, { passive: true });
 }
 
 /* Role line under the name rotates every 4 s (restored from 216ec7f); stays fixed with reduced motion. */
