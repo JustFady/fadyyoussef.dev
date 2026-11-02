@@ -4,18 +4,31 @@ import './style.css';
 const PALETTE = ['36, 184, 255', '168, 85, 255'];
 const reducedMotion = () => window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 
-/* Background: particle network that reacts to the cursor (restored from 216ec7f). */
+const LINK = 118; // particle-to-particle network distance
+const REACH = 140; // cursor constellation radius
+const CELL = 140; // grid cell size, at least LINK and REACH so a 3x3 cell block covers both
+const MAX_CURSOR_LINES = 16;
+const MAX_NEAR_LINES = 24;
+
+/* Background: particle network; on hover devices the particles near the cursor form a constellation. */
 function particles() {
   const canvas = document.querySelector('.particle-canvas');
   const ctx = canvas.getContext('2d');
   const still = reducedMotion();
+  // Touch-only devices and reduced motion keep the plain field.
+  const constellation = !still && !window.matchMedia?.('(hover: none)').matches;
   let frame = 0;
   let width = 0;
   let height = 0;
+  let pixelRatio = 1;
   let particles = [];
   let resizeTimeout;
-  let paused = false;
-  const pointer = { x: 0, y: 0, active: false };
+  let cells = [];
+  let cols = 0;
+  let rows = 0;
+  let near = [];
+  // strength eases towards 1 while the pointer is in the window and back to 0 after it leaves.
+  const pointer = { x: 0, y: 0, active: false, strength: 0 };
 
   const createParticles = () => {
     const count = Math.min(82, Math.max(24, Math.floor((width * height) / 24000)));
@@ -41,7 +54,7 @@ function particles() {
   };
 
   const resize = () => {
-    const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+    pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
     const previousWidth = width || window.innerWidth;
     const previousHeight = height || window.innerHeight;
     const previous = particles;
@@ -52,6 +65,9 @@ function particles() {
     canvas.style.width = `${width}px`;
     canvas.style.height = `${height}px`;
     ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+    cols = Math.ceil(width / CELL) + 1;
+    rows = Math.ceil(height / CELL) + 1;
+    cells = Array.from({ length: cols * rows }, () => []);
     if (!previous.length || Math.abs(width - previousWidth) > 120) {
       createParticles();
       return;
@@ -63,75 +79,111 @@ function particles() {
     window.clearTimeout(resizeTimeout);
     resizeTimeout = window.setTimeout(() => {
       resize();
-      if (still) draw(false);
+      if (still) draw();
     }, 120);
   };
 
-  const draw = (loop = true) => {
-    ctx.clearRect(0, 0, width, height);
+  // Uniform grid so each particle is only compared with its neighbours, not the whole field.
+  const indexGrid = () => {
+    cells.forEach((cell) => {
+      cell.length = 0;
+    });
+    particles.forEach((p, i) => {
+      const cx = Math.min(cols - 1, Math.floor(p.x / CELL));
+      const cy = Math.min(rows - 1, Math.floor(p.y / CELL));
+      cells[cy * cols + cx].push(i);
+    });
+  };
 
-    if (!still) {
-      particles.forEach((p) => {
-        p.vx += (p.baseVx - p.vx) * 0.02;
-        p.vy += (p.baseVy - p.vy) * 0.02;
-        if (pointer.active) {
-          const dx = p.x - pointer.x;
-          const dy = p.y - pointer.y;
-          const distance = Math.hypot(dx, dy);
-          if (distance > 0 && distance < 150) {
-            const force = (1 - distance / 150) * 0.075;
-            p.vx += (dx / distance) * force;
-            p.vy += (dy / distance) * force;
-          }
-        }
-        const velocity = Math.hypot(p.vx, p.vy);
-        if (velocity > 0.95) {
-          p.vx = (p.vx / velocity) * 0.95;
-          p.vy = (p.vy / velocity) * 0.95;
-        }
-        p.x = (p.x + p.vx + width) % width;
-        p.y = (p.y + p.vy + height) % height;
-      });
+  const eachNeighbour = (x, y, fn) => {
+    const cx = Math.floor(x / CELL);
+    const cy = Math.floor(y / CELL);
+    for (let gy = Math.max(0, cy - 1); gy <= Math.min(rows - 1, cy + 1); gy += 1) {
+      for (let gx = Math.max(0, cx - 1); gx <= Math.min(cols - 1, cx + 1); gx += 1) {
+        cells[gy * cols + gx].forEach(fn);
+      }
     }
+  };
 
-    for (let i = 0; i < particles.length; i += 1) {
-      for (let j = i + 1; j < particles.length; j += 1) {
-        const a = particles[i];
-        const b = particles[j];
+  const line = (ax, ay, bx, by) => {
+    ctx.beginPath();
+    ctx.moveTo(ax, ay);
+    ctx.lineTo(bx, by);
+    ctx.stroke();
+  };
+
+  const move = () => {
+    pointer.strength += ((pointer.active ? 1 : 0) - pointer.strength) * 0.08;
+    // Particles found near the cursor last frame drift gently away from it.
+    near.forEach(({ p, distance }) => {
+      if (distance === 0) return;
+      const force = (1 - distance / REACH) * 0.05 * pointer.strength;
+      p.vx += ((p.x - pointer.x) / distance) * force;
+      p.vy += ((p.y - pointer.y) / distance) * force;
+    });
+    particles.forEach((p) => {
+      p.vx += (p.baseVx - p.vx) * 0.02;
+      p.vy += (p.baseVy - p.vy) * 0.02;
+      const velocity = Math.hypot(p.vx, p.vy);
+      if (velocity > 0.95) {
+        p.vx = (p.vx / velocity) * 0.95;
+        p.vy = (p.vy / velocity) * 0.95;
+      }
+      p.x = (p.x + p.vx + width) % width;
+      p.y = (p.y + p.vy + height) % height;
+    });
+  };
+
+  const drawConstellation = () => {
+    near = [];
+    if (pointer.strength < 0.01) return;
+    eachNeighbour(pointer.x, pointer.y, (i) => {
+      const p = particles[i];
+      const distance = Math.hypot(p.x - pointer.x, p.y - pointer.y);
+      if (distance < REACH) near.push({ p, distance });
+    });
+    near.sort((a, b) => a.distance - b.distance);
+    near.length = Math.min(near.length, MAX_CURSOR_LINES);
+
+    ctx.lineWidth = pixelRatio > 1 ? 0.75 : 1;
+    let links = 0;
+    for (let i = 0; i < near.length && links < MAX_NEAR_LINES; i += 1) {
+      for (let j = i + 1; j < near.length && links < MAX_NEAR_LINES; j += 1) {
+        const a = near[i].p;
+        const b = near[j].p;
         const distance = Math.hypot(a.x - b.x, a.y - b.y);
-        if (distance < 118) {
-          ctx.strokeStyle = `rgba(130, 170, 255, ${0.24 * (1 - distance / 118)})`;
-          ctx.lineWidth = 1;
-          ctx.beginPath();
-          ctx.moveTo(a.x, a.y);
-          ctx.lineTo(b.x, b.y);
-          ctx.stroke();
+        if (distance < REACH) {
+          ctx.strokeStyle = `rgba(${a.rgb}, ${0.22 * (1 - distance / REACH) * pointer.strength})`;
+          line(a.x, a.y, b.x, b.y);
+          links += 1;
         }
       }
     }
+    near.forEach(({ p, distance }) => {
+      ctx.strokeStyle = `rgba(${p.rgb}, ${0.42 * (1 - distance / REACH) * pointer.strength})`;
+      line(pointer.x, pointer.y, p.x, p.y);
+    });
+  };
 
-    if (pointer.active && !still) {
-      particles.forEach((p) => {
-        const distance = Math.hypot(p.x - pointer.x, p.y - pointer.y);
-        if (distance < 170) {
-          ctx.strokeStyle = `rgba(${p.rgb}, ${0.47 * (1 - distance / 170)})`;
-          ctx.lineWidth = 1.25;
-          ctx.beginPath();
-          ctx.moveTo(pointer.x, pointer.y);
-          ctx.lineTo(p.x, p.y);
-          ctx.stroke();
+  const draw = () => {
+    ctx.clearRect(0, 0, width, height);
+    if (!still) move();
+    indexGrid();
+
+    ctx.lineWidth = 1;
+    particles.forEach((a, i) => {
+      eachNeighbour(a.x, a.y, (j) => {
+        if (j <= i) return;
+        const b = particles[j];
+        const distance = Math.hypot(a.x - b.x, a.y - b.y);
+        if (distance < LINK) {
+          ctx.strokeStyle = `rgba(130, 170, 255, ${0.24 * (1 - distance / LINK)})`;
+          line(a.x, a.y, b.x, b.y);
         }
       });
+    });
 
-      const glow = ctx.createRadialGradient(pointer.x, pointer.y, 0, pointer.x, pointer.y, 95);
-      glow.addColorStop(0, 'rgba(168, 85, 255, 0.18)');
-      glow.addColorStop(0.45, 'rgba(36, 184, 255, 0.08)');
-      glow.addColorStop(1, 'rgba(168, 85, 255, 0)');
-      ctx.fillStyle = glow;
-      ctx.beginPath();
-      ctx.arc(pointer.x, pointer.y, 95, 0, Math.PI * 2);
-      ctx.fill();
-    }
+    if (constellation) drawConstellation();
 
     particles.forEach((p) => {
       ctx.fillStyle = p.fill;
@@ -139,35 +191,43 @@ function particles() {
       ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
       ctx.fill();
     });
-
-    if (loop && !still && !paused) frame = window.requestAnimationFrame(() => draw(true));
   };
 
-  const onPointerMove = (event) => {
-    pointer.x = event.clientX;
-    pointer.y = event.clientY;
-    pointer.active = true;
-  };
-  const onPointerLeave = () => {
-    pointer.active = false;
-  };
-  const onVisibility = () => {
-    paused = document.hidden;
-    if (!paused && !still) {
-      window.cancelAnimationFrame(frame);
-      draw(true);
-    }
+  const tick = () => {
+    draw();
+    frame = document.hidden ? 0 : window.requestAnimationFrame(tick);
   };
 
   resize();
-  draw(!still);
-
+  if (still) {
+    draw();
+  } else {
+    tick();
+    document.addEventListener('visibilitychange', () => {
+      window.cancelAnimationFrame(frame);
+      frame = 0;
+      if (!document.hidden) tick();
+    });
+  }
   window.addEventListener('resize', queueResize, { passive: true });
-  window.addEventListener('pointermove', onPointerMove, { passive: true });
-  window.addEventListener('pointerleave', onPointerLeave, { passive: true });
-  window.addEventListener('pointerup', (event) => event.pointerType !== 'mouse' && onPointerLeave(), { passive: true });
-  window.addEventListener('pointercancel', onPointerLeave, { passive: true });
-  document.addEventListener('visibilitychange', onVisibility);
+
+  if (constellation) {
+    const leave = () => {
+      pointer.active = false;
+    };
+    window.addEventListener(
+      'pointermove',
+      (event) => {
+        if (event.pointerType === 'touch') return;
+        pointer.x = event.clientX;
+        pointer.y = event.clientY;
+        pointer.active = true;
+      },
+      { passive: true },
+    );
+    document.addEventListener('pointerout', (event) => !event.relatedTarget && leave(), { passive: true });
+    window.addEventListener('blur', leave);
+  }
 }
 
 /* Role line under the name rotates every 4 s (restored from 216ec7f); stays fixed with reduced motion. */
