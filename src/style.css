@@ -234,6 +234,12 @@ a {
   height: 24px;
 }
 
+/* The filled LinkedIn square reads heavier than the GitHub circle, so it sits a little smaller. */
+.hero-social a[data-label="LinkedIn"] svg.brand {
+  width: 21px;
+  height: 21px;
+}
+
 .hero-social a:hover svg,
 .hero-social a:focus-visible svg {
   filter: drop-shadow(0 0 6px rgba(var(--glow), 0.7)) drop-shadow(0 0 14px rgba(var(--glow), 0.35));
