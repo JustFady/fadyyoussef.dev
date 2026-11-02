@@ -414,6 +414,7 @@ main {
 }
 
 .project-list-item strong {
+  white-space: normal;
   color: rgba(255, 255, 255, 0.86);
   font-size: 1.06rem;
   line-height: 1.36;
