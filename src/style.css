@@ -157,12 +157,29 @@ a {
 .hero-social a {
   position: relative;
   display: inline-flex;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   align-items: center;
   justify-content: center;
   color: var(--text-muted);
   transition: color 0.25s ease, transform 0.25s ease;
+}
+
+/* Glow colour steps from the teal corner to the violet one across the row. */
+.hero-social a:nth-child(1) {
+  --glow: 36, 184, 255;
+}
+
+.hero-social a:nth-child(2) {
+  --glow: 80, 151, 255;
+}
+
+.hero-social a:nth-child(3) {
+  --glow: 124, 118, 255;
+}
+
+.hero-social a:nth-child(4) {
+  --glow: 168, 85, 255;
 }
 
 .hero-social a:hover,
@@ -172,8 +189,20 @@ a {
 }
 
 .hero-social svg {
-  width: 26px;
-  height: 26px;
+  width: 29px;
+  height: 29px;
+  transition: filter 0.25s ease;
+}
+
+/* Filled brand marks fill their whole box; shrink them to sit level with the outline icons. */
+.hero-social svg.brand {
+  width: 24px;
+  height: 24px;
+}
+
+.hero-social a:hover svg,
+.hero-social a:focus-visible svg {
+  filter: drop-shadow(0 0 6px rgba(var(--glow), 0.7)) drop-shadow(0 0 14px rgba(var(--glow), 0.35));
 }
 
 /* Hover/focus labels on the icon row. */
@@ -255,11 +284,6 @@ a {
 @media (max-width: 780px) {
   .hero-social {
     gap: 18px;
-  }
-
-  .hero-social a {
-    width: 44px;
-    height: 44px;
   }
 
   .site-footer {
