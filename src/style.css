@@ -296,10 +296,16 @@ main {
   max-height: calc(100svh - 160px);
   overflow-y: auto;
   overscroll-behavior: contain;
-  padding: 4px 4px 8px;
   scrollbar-width: thin;
   scrollbar-color: rgba(255, 255, 255, 0.24) transparent;
   animation: rise 0.6s var(--ease) both;
+  /* Translucent backdrop so About/Projects text never competes with the particles (hero stays bare). */
+  padding: 30px 34px 32px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: rgba(0, 0, 0, 0.55);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
 }
 
 .page-kicker {
@@ -575,7 +581,8 @@ main {
   .page-content {
     width: min(100%, 560px);
     max-height: calc(100svh - 150px);
-    padding: 2px 2px 12px;
+    padding: 20px 18px 22px;
+    border-radius: 12px;
   }
 
   .page-content h1 {
