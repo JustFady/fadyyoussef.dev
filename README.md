@@ -8,7 +8,7 @@ Live site: [fadyyoussef.dev](https://fadyyoussef.dev)
 
 - Responsive layout for desktop and mobile
 - Interactive particle background that reacts to the cursor
-- Home, About and Projects views (linkable as `#about` and `#projects`)
+- One page: name, rotating role line and an icon row
 - GitHub, LinkedIn, resume and email links
 - Respects `prefers-reduced-motion`
 
@@ -31,8 +31,8 @@ The local dev server will print a URL in your terminal.
 
 ## Customize It
 
-- `index.html`: page structure, About copy and the home icon row
-- `src/main.js`: rotating titles in `TITLES`, project cards in `PROJECTS`, the particle background
+- `index.html`: page structure and the icon row
+- `src/main.js`: rotating titles in `TITLES`, the particle background
 - `src/style.css`: all styling, including the mobile rules
 
 Static files live in `public/`:
