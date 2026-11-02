@@ -171,6 +171,7 @@ main {
 }
 
 .hero-social a {
+  position: relative;
   display: inline-flex;
   width: 40px;
   height: 40px;
@@ -189,6 +190,44 @@ main {
 .hero-social svg {
   width: 26px;
   height: 26px;
+}
+
+/* Hover/focus labels on the icon row (restored from 216ec7f .icon-link::before). */
+.hero-social a::before {
+  content: attr(data-label);
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 10px);
+  padding: 5px 9px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 6px;
+  background: rgba(8, 8, 10, 0.86);
+  color: var(--text-main);
+  font-size: 0.78rem;
+  font-weight: 500;
+  line-height: 1;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-50%) translateY(4px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  white-space: nowrap;
+}
+
+.hero-social a:hover::before,
+.hero-social a:focus-visible::before {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+@media (max-width: 780px) {
+  .hero-social {
+    gap: 18px;
+  }
+
+  .hero-social a {
+    width: 44px;
+    height: 44px;
+  }
 }
 
 @keyframes rise {
