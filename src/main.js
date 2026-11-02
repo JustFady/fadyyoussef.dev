@@ -301,7 +301,13 @@ function projects() {
     const sub = document.createElement('small');
     sub.textContent = project.tags.slice(0, 2).join(' / ');
     button.append(number, name, sub);
-    button.addEventListener('click', () => select(index));
+    button.addEventListener('click', () => {
+      select(index);
+      // Single-column layout puts the card below the list, so bring it into view.
+      if (window.matchMedia('(max-width: 780px)').matches) {
+        detail.scrollIntoView({ block: 'nearest', behavior: reducedMotion() ? 'auto' : 'smooth' });
+      }
+    });
     list.append(button);
     return button;
   });

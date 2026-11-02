@@ -78,6 +78,7 @@ button {
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
+    animation-delay: 0s !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
@@ -606,8 +607,15 @@ main {
     padding: 10px 12px;
   }
 
+  .project-list-item:hover,
+  .project-list-item:focus-visible,
+  .project-list-item.is-active {
+    transform: none;
+  }
+
   .project-detail {
     position: relative;
+    scroll-margin: 12px;
     top: auto;
     padding: 18px;
   }
