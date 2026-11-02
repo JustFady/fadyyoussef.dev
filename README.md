@@ -1,22 +1,21 @@
 # Fady Youssef Portfolio
 
-A personal portfolio site built with React, Vite, and a custom interactive canvas background.
+My personal site, built with plain HTML, CSS and JavaScript on Vite, with an interactive canvas background.
 
 Live site: [fadyyoussef.dev](https://fadyyoussef.dev)
 
 ## Features
 
 - Responsive layout for desktop and mobile
-- Interactive canvas particle background
-- Home, About, and Projects tabs
-- Social, resume, and email links
-- Custom favicon and GitHub Pages deployment
+- Interactive particle background that reacts to the cursor
+- Home, About and Projects views (linkable as `#about` and `#projects`)
+- GitHub, LinkedIn, resume and email links
+- Respects `prefers-reduced-motion`
 
 ## Tech Stack
 
-- React
 - Vite
-- CSS
+- HTML, CSS, JavaScript (no framework)
 - GitHub Pages
 
 ## Run Locally
@@ -24,27 +23,22 @@ Live site: [fadyyoussef.dev](https://fadyyoussef.dev)
 ```bash
 git clone https://github.com/JustFady/FY-Portfolio.git
 cd FY-Portfolio
-npm install
+npm ci
 npm run dev
 ```
-The local dev server will print a URL in your terminal.
 
+The local dev server will print a URL in your terminal.
 
 ## Customize It
 
-Most of the content lives in `src/App.jsx`:
-
-- Update rotating titles in `TITLES`
-- Update project cards in `PROJECTS`
-- Edit About copy in the `about` tab section
-- Change social links in the home icon row
-
-Main styling lives in `src/App.css`, including the responsive mobile rules and tab layout.
+- `index.html`: page structure, About copy and the home icon row
+- `src/main.js`: rotating titles in `TITLES`, project cards in `PROJECTS`, the particle background
+- `src/style.css`: all styling, including the mobile rules
 
 Static files live in `public/`:
 
 - `resume.pdf`
-- `favicon.png`
+- `favicon.svg` and `og.png`
 - `CNAME` for the custom domain
 
 ## Build
