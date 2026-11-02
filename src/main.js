@@ -83,7 +83,7 @@ function particles() {
     }, 120);
   };
 
-  // Uniform grid so each particle is only compared with its neighbours, not the whole field.
+  // Uniform grid so each particle is only compared with its neighbors, not the whole field.
   const indexGrid = () => {
     cells.forEach((cell) => {
       cell.length = 0;

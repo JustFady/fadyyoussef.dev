@@ -199,7 +199,7 @@ a {
   transition: color 0.25s ease, transform 0.25s ease;
 }
 
-/* Glow colour steps from the teal corner to the violet one across the row. */
+/* Glow color steps from the teal corner to the violet one across the row. */
 .hero-social a:nth-child(1) {
   --glow: 36, 184, 255;
 }
