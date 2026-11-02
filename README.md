@@ -21,8 +21,8 @@ Live site: [fadyyoussef.dev](https://fadyyoussef.dev)
 ## Run Locally
 
 ```bash
-git clone https://github.com/JustFady/FY-Portfolio.git
-cd FY-Portfolio
+git clone https://github.com/JustFady/fadyyoussef.dev.git
+cd fadyyoussef.dev
 npm ci
 npm run dev
 ```
@@ -37,9 +37,11 @@ The local dev server will print a URL in your terminal.
 
 Static files live in `public/`:
 
-- `resume.pdf`
 - `favicon.svg` and `og.png`
+- `robots.txt` and `sitemap.xml`
 - `CNAME` for the custom domain
+
+The Resume icon links to `/FYoussef_Resume.pdf`, so put that file in `public/` to serve it.
 
 ## Build
 
