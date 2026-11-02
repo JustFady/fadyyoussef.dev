@@ -37,7 +37,7 @@ The local dev server will print a URL in your terminal.
 
 Static files live in `public/`:
 
-- `favicon.svg` and `og.png`
+- `favicon.svg`, `favicon-32.png`, `apple-touch-icon.png` and `og.png`
 - `robots.txt` and `sitemap.xml`
 - `CNAME` for the custom domain
 
