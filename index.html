@@ -42,8 +42,13 @@
   <body>
     <canvas class="particle-canvas" aria-hidden="true"></canvas>
     <div class="aurora" aria-hidden="true"></div>
+    <nav class="site-nav" aria-label="Primary">
+      <a class="nav-tab" href="#home" data-tab="home" aria-current="page">Home</a>
+      <a class="nav-tab" href="#about" data-tab="about">About</a>
+      <a class="nav-tab" href="#projects" data-tab="projects">Projects</a>
+    </nav>
     <main>
-      <section class="hero">
+      <section class="hero panel" id="home" data-panel="home" aria-label="Home">
         <div class="hero-inner">
           <h1 class="hero-name">Fady Youssef</h1>
           <p class="hero-role">Software Engineer · Austin, TX</p>
@@ -55,7 +60,59 @@
           <p class="copy-note" role="status" aria-live="polite"></p>
         </div>
       </section>
+
+      <section class="page-content panel" id="about" data-panel="about" aria-labelledby="about-title" hidden>
+        <p class="page-kicker">About</p>
+        <h1 id="about-title" tabindex="-1">I build embedded and backend software.</h1>
+        <p>
+          I'm a software engineer at Tyr Laboratories in Austin, working on flight control software for
+          Heimdall 2, Tyr's modular uncrewed aircraft. I like the problems where software meets hardware and
+          real networks: drivers, timing, links that drop packets, and bugs that only show up on the bench.
+        </p>
+        <p>
+          I studied computer science at Gonzaga University with a concentration in software security. Before
+          Tyr I wrote FreeRTOS firmware for a sensor board with Itron as my senior design project, worked as a
+          teaching assistant for Linux and DevOps, and built Python data pipelines on AWS as an intern at
+          Pangeon.
+        </p>
+        <p>Outside of code I'm usually running, making beats, or digging into how languages and tools shape the way people think.</p>
+        <dl class="facts">
+          <div>
+            <dt>Now</dt>
+            <dd>Software Engineer, Tyr Laboratories · Austin, TX</dd>
+          </div>
+          <div>
+            <dt>Education</dt>
+            <dd>B.S. Computer Science, Gonzaga University, 2026</dd>
+          </div>
+          <div>
+            <dt>Works in</dt>
+            <dd>C/C++ · Rust · Python · Embedded Linux · FreeRTOS</dd>
+          </div>
+        </dl>
+      </section>
+
+      <section class="page-content panel projects-content" id="projects" data-panel="projects" aria-labelledby="projects-title" hidden>
+        <p class="page-kicker">Projects</p>
+        <h1 id="projects-title" tabindex="-1">Selected work</h1>
+        <div class="project-focus">
+          <div class="project-list" role="group" aria-label="Projects"></div>
+          <article class="project-detail" id="project-detail" aria-live="polite">
+            <div class="project-detail-content">
+              <h2></h2>
+              <p></p>
+              <ul class="project-tags"></ul>
+            </div>
+            <a class="project-detail-link" target="_blank" rel="noreferrer">Open on GitHub</a>
+            <p class="project-detail-note"></p>
+          </article>
+        </div>
+      </section>
     </main>
+    <footer class="site-footer">
+      Designed and built by Fady Youssef |
+      <a href="https://github.com/JustFady/FY-Portfolio" target="_blank" rel="noreferrer">Source</a>
+    </footer>
     <script type="module" src="./src/main.js"></script>
   </body>
 </html>

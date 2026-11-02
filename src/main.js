@@ -169,6 +169,171 @@ function particles() {
 }
 
 
+const PROJECTS = [
+  {
+    title: 'Universal Sensor Board',
+    description:
+      'Senior design project with Itron. C/C++ FreeRTOS firmware for an Apollo3 MCU that collects, processes and transmits environmental sensor data, with HAL drivers for real-time SPI and I2C sensors, validated with J-Link debugging.',
+    tags: ['C/C++', 'FreeRTOS', 'SPI / I2C'],
+    note: 'Hardware project with Itron, so the code is not public.',
+    accent: '#28ff7a',
+  },
+  {
+    title: 'mcp-serial',
+    description:
+      'A tool server that lets AI coding assistants work a microcontroller the way you would at a serial console: list ports, read and filter logs, and flash STM32 or ESP32 boards. Flashing needs an explicit confirm and an allow-listed firmware directory.',
+    tags: ['Python', 'Serial', 'STM32 / ESP32'],
+    link: 'https://github.com/JustFady/mcp-serial',
+    accent: '#24b8ff',
+  },
+  {
+    title: 'OurPL-Lang',
+    description:
+      'A small programming language I built from scratch in Java: a hand-written lexer, a recursive descent parser and a tree-walk interpreter, with functions, closures, lexical scoping and a unit test suite.',
+    tags: ['Java', 'Interpreters', 'Maven'],
+    link: 'https://github.com/JustFady/OurPL-Lang',
+    accent: '#a855ff',
+  },
+  {
+    title: 'Kinetic-Edge',
+    description:
+      'An offline video pipeline that tracks basketball players and the ball with YOLOv8. C++ ingests frames with OpenCV, Python runs the tracking, and the tool flags out-of-bounds plays, sudden acceleration spikes and possession changes.',
+    tags: ['C++', 'Python', 'Computer Vision'],
+    link: 'https://github.com/JustFady/kinetic-edge',
+    accent: '#ff305c',
+  },
+  {
+    title: 'Phishing Awareness Training',
+    description:
+      'A phishing simulation first built with Flask and Docker, with tests and GitHub Actions CI, and now a static GitHub Pages demo. It walks people through a realistic password-reset lure and never collects or stores credentials.',
+    tags: ['Security', 'Flask', 'GitHub Actions'],
+    link: 'https://github.com/JustFady/GU-Phishing-Awareness',
+    accent: '#ffb020',
+  },
+  {
+    title: 'docpipe',
+    description:
+      'A pipeline for real-world PDFs: classify each document, extract fields to a typed schema, check rules like total = subtotal + tax, and send anything doubtful to a person with the evidence attached. An eval command reports per-field precision and recall.',
+    tags: ['Python', 'Validation', 'CLI'],
+    link: 'https://github.com/JustFady/docpipe',
+    accent: '#24b8ff',
+  },
+  {
+    title: 'Three Classic Ciphers',
+    description: 'A C++ terminal app that encrypts and decrypts text with the Caesar, Vigenère and one-time pad ciphers.',
+    tags: ['C++', 'Cryptography'],
+    link: 'https://github.com/JustFady/ThreeClassicCiphers',
+    accent: '#a855ff',
+  },
+  {
+    title: 'CrimsonCode2026',
+    description:
+      'A Kotlin Multiplatform emergency-response app with OTP sign-in, contacts, map and list event browsing, and Supabase-backed event creation.',
+    tags: ['Kotlin', 'Compose', 'Supabase'],
+    link: 'https://github.com/JustFady/CrimsonCode2026',
+    accent: '#28ff7a',
+  },
+  {
+    title: 'Heat Transfer Laboratory',
+    description:
+      'A heat-transfer lab for a steel ball dropped into boiling water, with randomized trials, live charts and CSV export. It runs in the browser, and the original Windows Forms version is still included.',
+    tags: ['C#', 'JavaScript', 'Simulation'],
+    link: 'https://github.com/JustFady/HeatTransfer',
+    accent: '#ff305c',
+  },
+];
+
+/* Home / About / Projects views, driven by the URL hash (restored from 216ec7f's tabs). */
+function tabs() {
+  const links = [...document.querySelectorAll('.nav-tab')];
+  const panels = [...document.querySelectorAll('.panel')];
+  const names = panels.map((panel) => panel.dataset.panel);
+
+  const show = (name, moveFocus) => {
+    const target = names.includes(name) ? name : 'home';
+    panels.forEach((panel) => {
+      panel.hidden = panel.dataset.panel !== target;
+    });
+    links.forEach((link) => {
+      if (link.dataset.tab === target) link.setAttribute('aria-current', 'page');
+      else link.removeAttribute('aria-current');
+    });
+    if (moveFocus && target !== 'home') {
+      document.querySelector(`[data-panel="${target}"] h1`)?.focus({ preventScroll: true });
+    }
+  };
+
+  links.forEach((link) => {
+    link.addEventListener('click', (event) => {
+      event.preventDefault();
+      const name = link.dataset.tab;
+      history.replaceState(null, '', name === 'home' ? window.location.pathname : `#${name}`);
+      show(name, true);
+    });
+  });
+  window.addEventListener('hashchange', () => show(window.location.hash.slice(1), true));
+  show(window.location.hash.slice(1), false);
+}
+
+/* Split-focus project browser: numbered list on one side, detail card on the other. */
+function projects() {
+  const list = document.querySelector('.project-list');
+  const detail = document.querySelector('.project-detail');
+  if (!list || !detail) return;
+  const title = detail.querySelector('h2');
+  const text = detail.querySelector('.project-detail-content p');
+  const tags = detail.querySelector('.project-tags');
+  const link = detail.querySelector('.project-detail-link');
+  const note = detail.querySelector('.project-detail-note');
+
+  const buttons = PROJECTS.map((project, index) => {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'project-list-item';
+    button.style.setProperty('--project-accent', project.accent);
+    button.setAttribute('aria-controls', 'project-detail');
+    const number = document.createElement('span');
+    number.textContent = String(index + 1).padStart(2, '0');
+    number.setAttribute('aria-hidden', 'true');
+    const name = document.createElement('strong');
+    name.textContent = project.title;
+    const sub = document.createElement('small');
+    sub.textContent = project.tags.slice(0, 2).join(' / ');
+    button.append(number, name, sub);
+    button.addEventListener('click', () => select(index));
+    list.append(button);
+    return button;
+  });
+
+  function select(index) {
+    const project = PROJECTS[index];
+    buttons.forEach((button, i) => {
+      button.classList.toggle('is-active', i === index);
+      button.setAttribute('aria-pressed', String(i === index));
+    });
+    detail.style.setProperty('--project-accent', project.accent);
+    title.textContent = project.title;
+    text.textContent = project.description;
+    tags.setAttribute('aria-label', `${project.title} technologies`);
+    tags.replaceChildren(
+      ...project.tags.map((tag) => {
+        const item = document.createElement('li');
+        item.textContent = tag;
+        return item;
+      }),
+    );
+    link.hidden = !project.link;
+    if (project.link) {
+      link.href = project.link;
+      link.setAttribute('aria-label', `Open ${project.title} on GitHub`);
+    }
+    note.hidden = !project.note;
+    note.textContent = project.note || '';
+  }
+
+  select(0);
+}
+
 /* Email icon copies the address (works for webmail users); falls back to mailto. */
 function copyEmail() {
   const link = document.querySelector('.email-link');
@@ -191,4 +356,6 @@ function copyEmail() {
 }
 
 particles();
+tabs();
+projects();
 copyEmail();
