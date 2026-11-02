@@ -174,7 +174,7 @@ const PROJECTS = [
   {
     title: 'Universal Sensor Board',
     description:
-      'Senior design project with Itron. C/C++ FreeRTOS firmware for an Apollo3 MCU that collects, processes and transmits environmental sensor data, with HAL drivers for real-time SPI and I2C sensors, validated with J-Link debugging.',
+      'Senior design project in collaboration with Itron. C/C++ FreeRTOS firmware for an Apollo3 MCU that collects, processes and transmits environmental sensor data, with HAL drivers for real-time SPI and I2C sensors, validated with J-Link debugging.',
     tags: ['C/C++', 'FreeRTOS', 'SPI / I2C'],
     note: 'Hardware project with Itron, so the code is not public.',
     accent: '#28ff7a',
@@ -190,7 +190,7 @@ const PROJECTS = [
   {
     title: 'OurPL-Lang',
     description:
-      'A small programming language I built from scratch in Java: a hand-written lexer, a recursive descent parser and a tree-walk interpreter, with functions, closures, lexical scoping and a unit test suite.',
+      'Java interpreter for a small language (course project): hand-written lexer, recursive descent parser, and tree-walk evaluator with closures and lexical scoping; JUnit tests for the lexer and parser.',
     tags: ['Java', 'Interpreters', 'Maven'],
     link: 'https://github.com/JustFady/OurPL-Lang',
     accent: '#a855ff',
@@ -204,9 +204,9 @@ const PROJECTS = [
     accent: '#ff305c',
   },
   {
-    title: 'Phishing Awareness Training',
+    title: 'Phishing Awareness Training Platform',
     description:
-      'A phishing simulation first built with Flask and Docker, with tests and GitHub Actions CI, and now a static GitHub Pages demo. It walks people through a realistic password-reset lure and never collects or stores credentials.',
+      'A phishing simulation built with Flask and Docker, with tests and GitHub Actions CI, later published as a static GitHub Pages demo. It walks people through a realistic password-reset lure and never collects or stores credentials.',
     tags: ['Security', 'Flask', 'GitHub Actions'],
     link: 'https://github.com/JustFady/GU-Phishing-Awareness',
     accent: '#ffb020',
