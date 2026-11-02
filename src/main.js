@@ -3,7 +3,7 @@ import './style.css';
 const PARTICLE_COLORS = ['#28ff7a', '#24b8ff', '#a855ff', '#ff305c'];
 const reducedMotion = () => window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 
-/* Background: drifting particles. */
+/* Background: particle network that reacts to the cursor (restored from 216ec7f). */
 function particles() {
   const canvas = document.querySelector('.particle-canvas');
   const ctx = canvas.getContext('2d');
@@ -17,11 +17,10 @@ function particles() {
   const pointer = { x: 0, y: 0, active: false };
 
   const createParticles = () => {
-    const mobile = width < 720;
-    const count = mobile ? 12 : 20;
+    const count = Math.min(82, Math.max(46, Math.floor((width * height) / 24000)));
     particles = Array.from({ length: count }, (_, index) => {
       const angle = ((index * 137.5) % 360) * (Math.PI / 180);
-      const speed = 0.06 + (index % 7) * 0.012;
+      const speed = 0.18 + (index % 7) * 0.02;
       return {
         x: (index * 97) % Math.max(width, 1),
         y: (index * 151) % Math.max(height, 1),
@@ -29,8 +28,7 @@ function particles() {
         baseVy: Math.sin(angle) * speed,
         vx: Math.cos(angle) * speed,
         vy: Math.sin(angle) * speed,
-        radius: 1.6 + (index % 5) * 0.35,
-        depth: 0.4 + (index % 4) * 0.2,
+        radius: 2.8 + (index % 5) * 0.55,
         color: PARTICLE_COLORS[index % PARTICLE_COLORS.length],
       };
     });
@@ -65,16 +63,14 @@ function particles() {
 
   const draw = (loop = true) => {
     ctx.clearRect(0, 0, width, height);
-    const scroll = still ? 0 : window.scrollY * 0.12;
-    const pos = particles.map((p) => ({ x: p.x, y: (((p.y - scroll * p.depth) % height) + height) % height }));
 
     if (!still) {
-      particles.forEach((p, i) => {
+      particles.forEach((p) => {
         p.vx += (p.baseVx - p.vx) * 0.02;
         p.vy += (p.baseVy - p.vy) * 0.02;
         if (pointer.active) {
-          const dx = pos[i].x - pointer.x;
-          const dy = pos[i].y - pointer.y;
+          const dx = p.x - pointer.x;
+          const dy = p.y - pointer.y;
           const distance = Math.hypot(dx, dy);
           if (distance > 0 && distance < 150) {
             const force = (1 - distance / 150) * 0.075;
@@ -92,30 +88,54 @@ function particles() {
       });
     }
 
-    for (let i = 0; i < pos.length; i += 1) {
-      for (let j = i + 1; j < pos.length; j += 1) {
-        const distance = Math.hypot(pos[i].x - pos[j].x, pos[i].y - pos[j].y);
-        if (distance < 160) {
-          ctx.strokeStyle = `rgba(130, 170, 255, ${0.1 * (1 - distance / 160)})`;
+    for (let i = 0; i < particles.length; i += 1) {
+      for (let j = i + 1; j < particles.length; j += 1) {
+        const a = particles[i];
+        const b = particles[j];
+        const distance = Math.hypot(a.x - b.x, a.y - b.y);
+        if (distance < 118) {
+          ctx.strokeStyle = `rgba(130, 170, 255, ${0.24 * (1 - distance / 118)})`;
           ctx.lineWidth = 1;
           ctx.beginPath();
-          ctx.moveTo(pos[i].x, pos[i].y);
-          ctx.lineTo(pos[j].x, pos[j].y);
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
           ctx.stroke();
         }
       }
     }
 
+    if (pointer.active && !still) {
+      particles.forEach((p) => {
+        const distance = Math.hypot(p.x - pointer.x, p.y - pointer.y);
+        if (distance < 170) {
+          const alpha = Math.round(120 * (1 - distance / 170))
+            .toString(16)
+            .padStart(2, '0');
+          ctx.strokeStyle = `${p.color}${alpha}`;
+          ctx.lineWidth = 1.25;
+          ctx.beginPath();
+          ctx.moveTo(pointer.x, pointer.y);
+          ctx.lineTo(p.x, p.y);
+          ctx.stroke();
+        }
+      });
 
-    pos.forEach((q, i) => {
-      ctx.globalAlpha = 0.55;
-      ctx.fillStyle = particles[i].color;
+      const glow = ctx.createRadialGradient(pointer.x, pointer.y, 0, pointer.x, pointer.y, 95);
+      glow.addColorStop(0, 'rgba(168, 85, 255, 0.18)');
+      glow.addColorStop(0.45, 'rgba(36, 184, 255, 0.08)');
+      glow.addColorStop(1, 'rgba(40, 255, 122, 0)');
+      ctx.fillStyle = glow;
       ctx.beginPath();
-      ctx.arc(q.x, q.y, particles[i].radius, 0, Math.PI * 2);
+      ctx.arc(pointer.x, pointer.y, 95, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    particles.forEach((p) => {
+      ctx.fillStyle = p.color;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
       ctx.fill();
     });
-
-    ctx.globalAlpha = 1;
 
     if (loop && !still && !paused) frame = window.requestAnimationFrame(() => draw(true));
   };
@@ -143,6 +163,8 @@ function particles() {
   window.addEventListener('resize', queueResize, { passive: true });
   window.addEventListener('pointermove', onPointerMove, { passive: true });
   window.addEventListener('pointerleave', onPointerLeave, { passive: true });
+  window.addEventListener('pointerup', (event) => event.pointerType !== 'mouse' && onPointerLeave(), { passive: true });
+  window.addEventListener('pointercancel', onPointerLeave, { passive: true });
   document.addEventListener('visibilitychange', onVisibility);
 }
 
